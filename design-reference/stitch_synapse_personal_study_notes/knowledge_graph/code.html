@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"tertiary-container":"#00a0d7","secondary-fixed":"#62fae3","tertiary-fixed-dim":"#7bd0ff","on-secondary-fixed-variant":"#005047","surface-dim":"#101319","surface":"#101319","surface-container-low":"#191c22","on-secondary-container":"#004d44","inverse-primary":"#4953bc","surface-tint":"#bdc2ff","outline-variant":"#454653","primary-fixed-dim":"#bdc2ff","error-container":"#93000a","inverse-surface":"#e1e2eb","surface-container-lowest":"#0b0e14","on-tertiary-fixed":"#001e2c","secondary-fixed-dim":"#3cddc7","primary":"#bdc2ff","on-tertiary-container":"#003246","on-primary-container":"#101b8a","on-secondary-fixed":"#00201c","on-error":"#690005","on-error-container":"#ffdad6","on-background":"#e1e2eb","secondary-container":"#03c6b2","on-surface":"#e1e2eb","tertiary-fixed":"#c4e7ff","secondary":"#44e2cd","on-tertiary-fixed-variant":"#004c69","primary-container":"#818cf8","surface-container":"#1d2026","surface-container-high":"#272a30","inverse-on-surface":"#2d3037","tertiary":"#7bd0ff","background":"#101319","on-primary-fixed":"#000767","on-secondary":"#003731","on-tertiary":"#00354a","on-primary":"#131e8c","surface-variant":"#32353b","outline":"#908f9e","error":"#ffb4ab","on-surface-variant":"#c6c5d5","surface-container-highest":"#32353b","on-primary-fixed-variant":"#2f3aa3","surface-bright":"#363940","primary-fixed":"#e0e0ff"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"margin-tablet":"1.5rem","margin":"2.5rem","space-lg":"1.5rem","space-sm":"0.5rem","margin-mobile":"1rem","space-md":"1rem","gutter":"1.5rem","gutter-mobile":"0.75rem","space-xs":"0.25rem","gutter-tablet":"1rem","space-xl":"2.5rem"},"fontFamily":{"quote-callout":["Newsreader"],"headline-md":["Newsreader"],"headline-xl-mobile":["Newsreader"],"label-lg":["JetBrains Mono"],"headline-xl":["Newsreader"],"body-xl":["Newsreader"],"label-sm":["JetBrains Mono"],"body-md":["Newsreader"],"headline-lg-mobile":["Newsreader"],"label-md":["JetBrains Mono"],"headline-sm":["Newsreader"],"body-lg":["Newsreader"],"headline-lg":["Newsreader"]},"fontSize":{"quote-callout":["18px",{"lineHeight":"32px","letterSpacing":"0em","fontWeight":"400"}],"headline-md":["24px",{"lineHeight":"34px","letterSpacing":"-0.01em","fontWeight":"500"}],"headline-xl-mobile":["30px",{"lineHeight":"38px","letterSpacing":"-0.01em","fontWeight":"400"}],"label-lg":["13px",{"lineHeight":"18px","letterSpacing":"0.02em","fontWeight":"500"}],"headline-xl":["40px",{"lineHeight":"52px","letterSpacing":"-0.02em","fontWeight":"400"}],"body-xl":["19px",{"lineHeight":"34px","fontWeight":"400"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"400"}],"body-md":["15px",{"lineHeight":"26px","fontWeight":"400"}],"headline-lg-mobile":["24px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"400"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.03em","fontWeight":"400"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"500"}],"body-lg":["17px",{"lineHeight":"30px","fontWeight":"400"}],"headline-lg":["32px",{"lineHeight":"42px","letterSpacing":"-0.015em","fontWeight":"400"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary-container/30 selection:text-primary"><header class="fixed top-0 left-0 right-0 h-16 bg-surface/90 backdrop-blur-xl z-50 shadow-[0_1px_8px_rgba(0,0,0,0.35)]"><div class="h-16 w-full px-6 flex items-center justify-between gap-4"><div class="flex items-center gap-6"><div class="flex items-center gap-3"><img alt="Minimalist abstract geometric logo for Synapse study notes app: two interconnected soft glowing synaptic nodes or book leaves, clean monoline icon in soft indigo and warm off-white on transparent dark background. Brand logo. - Primary color: #818cf8
+- Font: newsreader
+- Mode: dark
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UDvhnDs3BlPICTIBzkzkeorILlQp2jfYry-scXLIWt3nbK73QenCLou-3yevS2pKHphvvM0e36hB_uipr0oXWMpAdZq87Auulh3gBh_e113DweMJw-SBFgw-gcA4SPrImIONgnz3r_3ATSySNZ9Xq1o2yoljjhGxy2YbtKvX4e8eyXEpY5srdFCEwgUctnAS3q25jBxakNDMJicY7hPrCgSrlskBuiiuw9BHpk08Jc251LBUxUuXBzXnQ"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm tracking-tight text-on-surface font-normal">Synapse</span><span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase opacity-75">Personal Knowledge Base</span></div></div><div class="hidden md:flex items-center bg-surface-container px-3 py-1.5 rounded-lg text-on-surface-variant gap-3 cursor-pointer hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-sm">search</span><span class="font-label-sm text-label-sm">/ to search concepts...</span><kbd class="bg-surface-container-highest px-1.5 py-0.5 rounded text-on-surface font-label-sm text-[10px]">⌘K</kbd></div></div><div class="flex items-center gap-5"><div class="hidden lg:flex items-center gap-2 text-on-surface-variant"><span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span><span class="font-label-sm text-label-sm tracking-wide">Quiet Sync • Offline Ready</span></div><div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm"><span class="material-symbols-outlined text-[14px]">folder_special</span><span>Scholar Vault</span></div><button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary transition-all shadow-[0_0_16px_-2px_rgba(129,140,248,0.25)]"><span class="material-symbols-outlined text-[16px]">add</span><span>New Note</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><aside class="fixed left-0 top-16 bottom-0 w-64 bg-surface-container-lowest z-40 flex flex-col justify-between p-4 shadow-[1px_0_12px_rgba(0,0,0,0.25)]"><div class="flex flex-col gap-6"><div class="px-2 pt-2"><span class="font-label-sm text-label-sm uppercase tracking-widest text-outline">Notebook Shelf</span></div><nav class="flex flex-col gap-1" data-active-classes="bg-surface-container text-on-surface font-medium"><a class="flex items-center px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-md text-label-md" data-path="concepts" href="#">Concepts</a><a class="flex items-center px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-md text-label-md" data-path="note" href="#">Roadmap Study Note</a><a aria-current="page" class="flex items-center px-3 py-2 rounded-lg transition-colors bg-surface-container text-on-surface font-medium" data-path="graph" href="#">Graph View</a><a class="flex items-center px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-md text-label-md" data-path="saved" href="#">Recent Notes</a></nav></div><div class="p-3 rounded-lg bg-surface-container-low flex flex-col gap-2"><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-sm text-label-sm">Daily Inquiry</span><span class="material-symbols-outlined text-[14px] text-tertiary">auto_awesome</span></div><a class="font-label-sm text-label-sm text-secondary hover:underline" data-path="clarify" href="#">Deep Clarify Session →</a></div></aside><div class="pl-64"><main class="relative pt-16 min-h-screen bg-surface"><div class="flex flex-col w-full">
+<div class="relative w-full h-[calc(100vh-4rem)] overflow-hidden select-none bg-surface-container-lowest">
+<div class="absolute inset-0 pointer-events-none bg-[radial-gradient(#272a30_1px,transparent_1px)] [background-size:28px_28px] opacity-40"></div>
+<div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[720px] rounded-full bg-primary-container/10 blur-[130px] pointer-events-none"></div>
+<div class="absolute bottom-12 right-1/4 w-[540px] h-[540px] rounded-full bg-secondary-container/10 blur-[140px] pointer-events-none"></div>
+<div class="absolute top-1/4 left-1/4 w-[420px] h-[420px] rounded-full bg-tertiary-container/10 blur-[120px] pointer-events-none"></div>
+<svg class="w-full h-full cursor-grab active:cursor-grabbing transition-transform duration-75" id="synapseGraphCanvas">
+<defs>
+<radialgradient cx="50%" cy="50%" id="hubGlowIndigo" r="50%">
+<stop offset="0%" stop-color="#bdc2ff" stop-opacity="0.9"></stop>
+<stop offset="45%" stop-color="#818cf8" stop-opacity="0.4"></stop>
+<stop offset="100%" stop-color="#818cf8" stop-opacity="0"></stop>
+</radialgradient>
+<radialgradient cx="50%" cy="50%" id="hubGlowTeal" r="50%">
+<stop offset="0%" stop-color="#62fae3" stop-opacity="0.9"></stop>
+<stop offset="50%" stop-color="#03c6b2" stop-opacity="0.35"></stop>
+<stop offset="100%" stop-color="#03c6b2" stop-opacity="0"></stop>
+</radialgradient>
+<radialgradient cx="50%" cy="50%" id="hubGlowSky" r="50%">
+<stop offset="0%" stop-color="#c4e7ff" stop-opacity="0.9"></stop>
+<stop offset="50%" stop-color="#7bd0ff" stop-opacity="0.35"></stop>
+<stop offset="100%" stop-color="#7bd0ff" stop-opacity="0"></stop>
+</radialgradient>
+<filter height="200%" id="bloomFilter" width="200%" x="-50%" y="-50%">
+<fegaussianblur result="coloredBlur" stddeviation="3.5"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<g id="edgeLayer" stroke-linecap="round">
+<path d="M 480 340 L 400 240" stroke="#818cf8" stroke-opacity="0.35" stroke-width="1.2"></path>
+<path d="M 480 340 L 380 430" stroke="#818cf8" stroke-opacity="0.35" stroke-width="1.2"></path>
+<path d="M 480 340 L 590 280" stroke="#818cf8" stroke-opacity="0.4" stroke-width="1.4"></path>
+<path d="M 480 340 L 610 390" stroke="#818cf8" stroke-opacity="0.35" stroke-width="1.2"></path>
+<path d="M 480 340 L 520 480" stroke="#818cf8" stroke-opacity="0.3" stroke-width="1.1"></path>
+<path d="M 480 340 L 350 330" stroke="#818cf8" stroke-opacity="0.3" stroke-width="1"></path>
+<path d="M 400 240 L 340 180" stroke="#818cf8" stroke-dasharray="2 3" stroke-opacity="0.25" stroke-width="0.9"></path>
+<path d="M 400 240 L 430 160" stroke="#818cf8" stroke-opacity="0.25" stroke-width="0.9"></path>
+<path d="M 590 280 L 670 230" stroke="#818cf8" stroke-opacity="0.25" stroke-width="0.9"></path>
+<path d="M 610 390 L 700 420" stroke="#818cf8" stroke-opacity="0.25" stroke-width="0.9"></path>
+<path d="M 380 430 L 320 490" stroke="#818cf8" stroke-opacity="0.2" stroke-width="0.8"></path>
+<path d="M 520 480 L 540 560" stroke="#818cf8" stroke-opacity="0.2" stroke-width="0.8"></path>
+<path d="M 610 390 L 820 490" stroke="#bdc2ff" stroke-dasharray="3 4" stroke-opacity="0.3" stroke-width="1"></path>
+<path d="M 820 490 L 760 580" stroke="#818cf8" stroke-opacity="0.35" stroke-width="1.1"></path>
+<path d="M 820 490 L 910 530" stroke="#818cf8" stroke-opacity="0.35" stroke-width="1.1"></path>
+<path d="M 820 490 L 860 410" stroke="#818cf8" stroke-opacity="0.3" stroke-width="0.9"></path>
+<path d="M 910 530 L 990 570" stroke="#818cf8" stroke-opacity="0.2" stroke-width="0.8"></path>
+<path d="M 760 580 L 720 650" stroke="#818cf8" stroke-opacity="0.2" stroke-width="0.8"></path>
+<path d="M 230 520 L 290 610" stroke="#44e2cd" stroke-opacity="0.35" stroke-width="1.3"></path>
+<path d="M 230 520 L 150 450" stroke="#44e2cd" stroke-opacity="0.35" stroke-width="1.2"></path>
+<path d="M 230 520 L 140 580" stroke="#44e2cd" stroke-opacity="0.3" stroke-width="1"></path>
+<path d="M 230 520 L 210 390" stroke="#44e2cd" stroke-opacity="0.25" stroke-width="0.9"></path>
+<path d="M 290 610 L 370 660" stroke="#44e2cd" stroke-opacity="0.2" stroke-width="0.8"></path>
+<path d="M 140 580 L 80 640" stroke="#44e2cd" stroke-opacity="0.2" stroke-width="0.8"></path>
+<path d="M 150 450 L 90 420" stroke="#44e2cd" stroke-opacity="0.2" stroke-width="0.8"></path>
+<path d="M 780 200 L 720 120" stroke="#7bd0ff" stroke-opacity="0.35" stroke-width="1.2"></path>
+<path d="M 780 200 L 880 150" stroke="#7bd0ff" stroke-opacity="0.35" stroke-width="1.2"></path>
+<path d="M 780 200 L 870 260" stroke="#7bd0ff" stroke-opacity="0.3" stroke-width="1"></path>
+<path d="M 880 150 L 960 110" stroke="#7bd0ff" stroke-opacity="0.25" stroke-width="0.9"></path>
+<path d="M 880 150 L 950 180" stroke="#7bd0ff" stroke-opacity="0.2" stroke-width="0.8"></path>
+<path d="M 720 120 L 660 70" stroke="#7bd0ff" stroke-opacity="0.2" stroke-width="0.8"></path>
+<path d="M 1020 340 L 970 280" stroke="#c4e7ff" stroke-opacity="0.35" stroke-width="1.2"></path>
+<path d="M 1020 340 L 1090 260" stroke="#c4e7ff" stroke-opacity="0.35" stroke-width="1.2"></path>
+<path d="M 1020 340 L 1120 370" stroke="#c4e7ff" stroke-opacity="0.3" stroke-width="1"></path>
+<path d="M 1020 340 L 1060 440" stroke="#c4e7ff" stroke-opacity="0.3" stroke-width="0.9"></path>
+<path d="M 1090 260 L 1170 220" stroke="#c4e7ff" stroke-opacity="0.2" stroke-width="0.8"></path>
+<path d="M 970 280 L 920 230" stroke="#c4e7ff" stroke-opacity="0.2" stroke-width="0.8"></path>
+<path d="M 1060 440 L 1130 500" stroke="#c4e7ff" stroke-opacity="0.2" stroke-width="0.8"></path>
+<path d="M 480 340 Q 320 280 230 520" fill="none" stroke="#bdc2ff" stroke-dasharray="4 6" stroke-opacity="0.15" stroke-width="1"></path>
+<path d="M 590 280 Q 690 190 780 200" fill="none" stroke="#7bd0ff" stroke-dasharray="3 5" stroke-opacity="0.2" stroke-width="1"></path>
+</g>
+<g id="nodeLayer">
+<!-- Minor Perimeter Nodes (Bio) -->
+<g class="cursor-pointer transition-transform duration-200 hover:scale-125" data-node="Photolysis">
+<circle cx="340" cy="180" fill="#bdc2ff" opacity="0.6" r="3.5"></circle>
+<text fill="#c6c5d5" font-family="JetBrains Mono" font-size="10" opacity="0.7" text-anchor="middle" x="340" y="170">Photolysis</text>
+</g>
+<g class="cursor-pointer transition-transform duration-200 hover:scale-125" data-node="Plastoquinone">
+<circle cx="430" cy="160" fill="#bdc2ff" opacity="0.6" r="3.5"></circle>
+<text fill="#c6c5d5" font-family="JetBrains Mono" font-size="10" opacity="0.7" text-anchor="middle" x="430" y="150">Plastoquinone</text>
+</g>
+<g class="cursor-pointer transition-transform duration-200 hover:scale-125" data-node="Ferredoxin">
+<circle cx="670" cy="230" fill="#bdc2ff" opacity="0.6" r="3.5"></circle>
+<text fill="#c6c5d5" font-family="JetBrains Mono" font-size="10" opacity="0.7" text-anchor="middle" x="670" y="220">Ferredoxin</text>
+</g>
+<g class="cursor-pointer transition-transform duration-200 hover:scale-125" data-node="NADPH Oxidase">
+<circle cx="700" cy="420" fill="#bdc2ff" opacity="0.5" r="3"></circle>
+<text fill="#c6c5d5" font-family="JetBrains Mono" font-size="9" opacity="0.6" text-anchor="middle" x="700" y="435">NADPH-Ox</text>
+</g>
+<g class="cursor-pointer transition-transform duration-200 hover:scale-125" data-node="RuBisCO">
+<circle cx="320" cy="490" fill="#bdc2ff" opacity="0.6" r="4"></circle>
+<text fill="#c6c5d5" font-family="JetBrains Mono" font-size="10" opacity="0.7" text-anchor="middle" x="320" y="505">RuBisCO</text>
+</g>
+<g class="cursor-pointer transition-transform duration-200 hover:scale-125" data-node="P680 Reaction Ctr">
+<circle cx="540" cy="560" fill="#bdc2ff" opacity="0.5" r="3.5"></circle>
+<text fill="#c6c5d5" font-family="JetBrains Mono" font-size="9" opacity="0.6" text-anchor="middle" x="540" y="575">P680</text>
+</g>
+<!-- Minor Nodes (Physics) -->
+<g class="cursor-pointer transition-transform duration-200 hover:scale-125" data-node="F=dp/dt">
+<circle cx="370" cy="660" fill="#44e2cd" opacity="0.65" r="3.5"></circle>
+<text fill="#c6c5d5" font-family="JetBrains Mono" font-size="10" opacity="0.7" text-anchor="middle" x="370" y="675">F=dp/dt</text>
+</g>
+<g class="cursor-pointer transition-transform duration-200 hover:scale-125" data-node="Inertial Frames">
+<circle cx="80" cy="640" fill="#44e2cd" opacity="0.5" r="3"></circle>
+<text fill="#c6c5d5" font-family="JetBrains Mono" font-size="9" opacity="0.6" text-anchor="middle" x="80" y="655">Inertial Ref</text>
+</g>
+<g class="cursor-pointer transition-transform duration-200 hover:scale-125" data-node="Impulse Theorem">
+<circle cx="90" cy="420" fill="#44e2cd" opacity="0.6" r="3.5"></circle>
+<text fill="#c6c5d5" font-family="JetBrains Mono" font-size="10" opacity="0.7" text-anchor="middle" x="90" y="410">J = Δp</text>
+</g>
+<!-- Minor Nodes (CS / Math) -->
+<g class="cursor-pointer transition-transform duration-200 hover:scale-125" data-node="Red-Black Trees">
+<circle cx="960" cy="110" fill="#7bd0ff" opacity="0.65" r="4"></circle>
+<text fill="#c6c5d5" font-family="JetBrains Mono" font-size="10" opacity="0.7" text-anchor="middle" x="960" y="100">Red-Black Trees</text>
+</g>
+<g class="cursor-pointer transition-transform duration-200 hover:scale-125" data-node="Rotations">
+<circle cx="950" cy="180" fill="#7bd0ff" opacity="0.6" r="3.5"></circle>
+<text fill="#c6c5d5" font-family="JetBrains Mono" font-size="9" opacity="0.6" text-anchor="middle" x="950" y="195">Rotations (LL/RR)</text>
+</g>
+<g class="cursor-pointer transition-transform duration-200 hover:scale-125" data-node="B-Tree Page">
+<circle cx="660" cy="70" fill="#7bd0ff" opacity="0.5" r="3"></circle>
+<text fill="#c6c5d5" font-family="JetBrains Mono" font-size="9" opacity="0.6" text-anchor="middle" x="660" y="60">B-Tree Nodes</text>
+</g>
+<!-- Minor Nodes (Action Potential cluster) -->
+<g class="cursor-pointer transition-transform duration-200 hover:scale-125" data-node="Nernst Equation">
+<circle cx="1170" cy="220" fill="#c4e7ff" opacity="0.6" r="3.5"></circle>
+<text fill="#c6c5d5" font-family="JetBrains Mono" font-size="9" opacity="0.6" text-anchor="middle" x="1170" y="210">Nernst Potential</text>
+</g>
+<g class="cursor-pointer transition-transform duration-200 hover:scale-125" data-node="Refractory Period">
+<circle cx="1130" cy="500" fill="#c4e7ff" opacity="0.6" r="3.5"></circle>
+<text fill="#c6c5d5" font-family="JetBrains Mono" font-size="9" opacity="0.6" text-anchor="middle" x="1130" y="515">Refractory State</text>
+</g>
+<!-- Medium Secondary Nodes (Bio cluster around Photosynthesis) -->
+<g class="cursor-pointer group" data-node="Photosystem II">
+<circle cx="400" cy="240" fill="#1d2026" r="9" stroke="#818cf8" stroke-width="1.8"></circle>
+<circle cx="400" cy="240" fill="#bdc2ff" r="4"></circle>
+<text fill="#e1e2eb" font-family="Newsreader" font-size="12" text-anchor="middle" x="400" y="262">Photosystem II</text>
+</g>
+<g class="cursor-pointer group" data-node="Calvin Cycle">
+<circle cx="380" cy="430" fill="#1d2026" r="8" stroke="#818cf8" stroke-width="1.8"></circle>
+<circle cx="380" cy="430" fill="#bdc2ff" r="3.5"></circle>
+<text fill="#e1e2eb" font-family="Newsreader" font-size="12" text-anchor="middle" x="380" y="452">Calvin Cycle</text>
+</g>
+<g class="cursor-pointer group" data-node="Thylakoid Membrane">
+<circle cx="590" cy="280" fill="#1d2026" r="8.5" stroke="#818cf8" stroke-width="1.8"></circle>
+<circle cx="590" cy="280" fill="#bdc2ff" r="4"></circle>
+<text fill="#e1e2eb" font-family="Newsreader" font-size="12" text-anchor="middle" x="590" y="302">Thylakoid Lumen</text>
+</g>
+<g class="cursor-pointer group" data-node="ATP Synthase">
+<circle cx="610" cy="390" fill="#1d2026" r="8.5" stroke="#818cf8" stroke-width="1.8"></circle>
+<circle cx="610" cy="390" fill="#bdc2ff" r="4"></circle>
+<text fill="#e1e2eb" font-family="Newsreader" font-size="12" text-anchor="middle" x="610" y="412">ATP Synthase</text>
+</g>
+<g class="cursor-pointer group" data-node="Chloroplast Stroma">
+<circle cx="520" cy="480" fill="#1d2026" r="7" stroke="#818cf8" stroke-width="1.5"></circle>
+<circle cx="520" cy="480" fill="#bdc2ff" r="3"></circle>
+<text fill="#e1e2eb" font-family="Newsreader" font-size="11" text-anchor="middle" x="520" y="500">Stroma Matrix</text>
+</g>
+<!-- Medium Secondary Nodes (Other clusters) -->
+<g class="cursor-pointer group" data-node="Conservation of Momentum">
+<circle cx="290" cy="610" fill="#1d2026" r="8" stroke="#44e2cd" stroke-width="1.8"></circle>
+<circle cx="290" cy="610" fill="#62fae3" r="3.5"></circle>
+<text fill="#e1e2eb" font-family="Newsreader" font-size="12" text-anchor="middle" x="290" y="632">Conservation of Momentum</text>
+</g>
+<g class="cursor-pointer group" data-node="Euler Angles">
+<circle cx="150" cy="450" fill="#1d2026" r="7.5" stroke="#44e2cd" stroke-width="1.6"></circle>
+<circle cx="150" cy="450" fill="#62fae3" r="3"></circle>
+<text fill="#e1e2eb" font-family="Newsreader" font-size="11" text-anchor="middle" x="150" y="471">Rigid Dynamics</text>
+</g>
+<g class="cursor-pointer group" data-node="AVL Trees">
+<circle cx="880" cy="150" fill="#1d2026" r="8.5" stroke="#7bd0ff" stroke-width="1.8"></circle>
+<circle cx="880" cy="150" fill="#c4e7ff" r="3.5"></circle>
+<text fill="#e1e2eb" font-family="Newsreader" font-size="12" text-anchor="middle" x="880" y="172">AVL Self-Balance</text>
+</g>
+<g class="cursor-pointer group" data-node="Hodgkin-Huxley">
+<circle cx="1090" cy="260" fill="#1d2026" r="8" stroke="#bdc2ff" stroke-width="1.8"></circle>
+<circle cx="1090" cy="260" fill="#bdc2ff" r="3.5"></circle>
+<text fill="#e1e2eb" font-family="Newsreader" font-size="12" text-anchor="middle" x="1090" y="282">Hodgkin-Huxley Eq</text>
+</g>
+<g class="cursor-pointer group" data-node="Voltage-Gated Channels">
+<circle cx="970" cy="280" fill="#1d2026" r="7" stroke="#bdc2ff" stroke-width="1.6"></circle>
+<circle cx="970" cy="280" fill="#bdc2ff" r="3"></circle>
+<text fill="#e1e2eb" font-family="Newsreader" font-size="11" text-anchor="middle" x="970" y="300">Na+/K+ Channels</text>
+</g>
+<!-- MAJOR BRIGHT HUB NODES -->
+<!-- HUB: Photosynthesis (CENTRAL LUMINESCENT INDIGO HUB) -->
+<g class="cursor-pointer group" data-connections="6" data-desc="Light-dependent photon absorption through chlorophyll stacks yielding ATP and NADPH for carbohydrate synthesis." data-node="Photosynthesis" data-tags="biology, energetic-bio, biochemistry" id="hubPhotosynthesis">
+<circle class="animate-pulse opacity-90 pointer-events-none" cx="480" cy="340" fill="url(#hubGlowIndigo)" r="42"></circle>
+<circle cx="480" cy="340" fill="#191c22" filter="url(#bloomFilter)" r="19" stroke="#bdc2ff" stroke-width="2.5"></circle>
+<circle cx="480" cy="340" fill="#bdc2ff" r="9"></circle>
+<text class="drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" fill="#ffffff" font-family="Newsreader" font-size="16" font-weight="500" letter-spacing="-0.01em" text-anchor="middle" x="480" y="374">Photosynthesis</text>
+<text fill="#bdc2ff" font-family="JetBrains Mono" font-size="9" opacity="0.8" text-anchor="middle" x="480" y="388">HUB • 6 LINKS</text>
+</g>
+<!-- HUB: Cellular Respiration -->
+<g class="cursor-pointer group" data-connections="5" data-node="Cellular Respiration" data-tags="biology, metabolism">
+<circle class="pointer-events-none" cx="820" cy="490" fill="url(#hubGlowIndigo)" opacity="0.65" r="34"></circle>
+<circle cx="820" cy="490" fill="#191c22" r="16" stroke="#818cf8" stroke-width="2"></circle>
+<circle cx="820" cy="490" fill="#818cf8" r="7"></circle>
+<text fill="#ffffff" font-family="Newsreader" font-size="14" font-weight="500" text-anchor="middle" x="820" y="520">Cellular Respiration</text>
+<text fill="#818cf8" font-family="JetBrains Mono" font-size="8.5" opacity="0.8" text-anchor="middle" x="820" y="533">5 LINKS</text>
+</g>
+<!-- HUB: Newton's Second Law -->
+<g class="cursor-pointer group" data-connections="5" data-node="Newton's Second Law" data-tags="classical-mechanics, physics">
+<circle class="pointer-events-none" cx="230" cy="520" fill="url(#hubGlowTeal)" opacity="0.75" r="36"></circle>
+<circle cx="230" cy="520" fill="#191c22" r="17" stroke="#62fae3" stroke-width="2"></circle>
+<circle cx="230" cy="520" fill="#44e2cd" r="7.5"></circle>
+<text fill="#ffffff" font-family="Newsreader" font-size="14" font-weight="500" text-anchor="middle" x="230" y="552">Newton's Second Law</text>
+<text fill="#62fae3" font-family="JetBrains Mono" font-size="8.5" opacity="0.8" text-anchor="middle" x="230" y="565">PHYSICS HUB</text>
+</g>
+<!-- HUB: Binary Search Trees -->
+<g class="cursor-pointer group" data-connections="4" data-node="Binary Search Trees" data-tags="data-structures, computer-science">
+<circle class="pointer-events-none" cx="780" cy="200" fill="url(#hubGlowSky)" opacity="0.65" r="32"></circle>
+<circle cx="780" cy="200" fill="#191c22" r="15" stroke="#7bd0ff" stroke-width="2"></circle>
+<circle cx="780" cy="200" fill="#7bd0ff" r="6.5"></circle>
+<text fill="#ffffff" font-family="Newsreader" font-size="14" font-weight="500" text-anchor="middle" x="780" y="230">Binary Search Trees</text>
+<text fill="#7bd0ff" font-family="JetBrains Mono" font-size="8.5" opacity="0.8" text-anchor="middle" x="780" y="243">CS CLUSTER</text>
+</g>
+<!-- HUB: Action Potential -->
+<g class="cursor-pointer group" data-connections="4" data-node="Action Potential" data-tags="neurobiology, biophysics">
+<circle class="pointer-events-none" cx="1020" cy="340" fill="url(#hubGlowIndigo)" opacity="0.6" r="32"></circle>
+<circle cx="1020" cy="340" fill="#191c22" r="15" stroke="#bdc2ff" stroke-width="2"></circle>
+<circle cx="1020" cy="340" fill="#bdc2ff" r="6.5"></circle>
+<text fill="#ffffff" font-family="Newsreader" font-size="14" font-weight="500" text-anchor="middle" x="1020" y="370">Action Potential</text>
+<text fill="#bdc2ff" font-family="JetBrains Mono" font-size="8.5" opacity="0.8" text-anchor="middle" x="1020" y="383">NEURO BIOPHYSICS</text>
+</g>
+</g>
+</svg>
+<!-- TOP-LEFT: Floating Filter & Stat Overlay -->
+<div class="absolute top-5 left-5 flex items-center gap-3 pointer-events-auto">
+<div class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-surface-container/85 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.5)]">
+<span class="material-symbols-outlined text-[16px] text-outline">search</span>
+<input class="bg-transparent font-label-md text-label-md text-on-surface focus:outline-none placeholder:text-outline w-40" id="graphSearchInput" placeholder="Filter graph..." type="text"/>
+<kbd class="px-1.5 py-0.5 rounded bg-surface-container-highest font-label-sm text-[10px] text-on-surface-variant">⌘K</kbd>
+</div>
+<div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-container-low/80 backdrop-blur-md text-on-surface-variant shadow-sm">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm tracking-tight text-on-surface">42 nodes</span>
+<span class="text-outline-variant font-label-sm text-label-sm">•</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">78 connections</span>
+</div>
+</div>
+<!-- TOP-RIGHT: Display Filter Pills -->
+<div class="absolute top-5 right-5 flex items-center gap-2 pointer-events-auto">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container/80 hover:bg-surface-container-high transition-colors backdrop-blur-md text-on-surface font-label-sm text-label-sm shadow-sm">
+<span class="text-on-surface-variant">Depth:</span>
+<span class="text-primary font-medium">2</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container/80 hover:bg-surface-container-high transition-colors backdrop-blur-md text-on-surface font-label-sm text-label-sm shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-secondary">label</span>
+<span>Tags</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container/80 hover:bg-surface-container-high transition-colors backdrop-blur-md text-on-surface font-label-sm text-label-sm shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-outline">visibility_off</span>
+<span class="text-on-surface-variant">Orphans hidden</span>
+</button>
+<div class="h-4 w-px bg-surface-variant mx-1"></div>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-container/20 text-primary hover:bg-primary-container/30 transition-colors backdrop-blur-md font-label-sm text-label-sm shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span>Forces: Dynamic</span>
+</button>
+</div>
+<!-- BOTTOM-LEFT: Floating Selected Node Card (Docked / Interactive) -->
+<div class="absolute bottom-6 left-6 w-[360px] p-5 rounded-xl bg-surface-container/90 backdrop-blur-xl shadow-[0_16px_40px_-12px_rgba(0,0,0,0.7)] transition-all duration-300 pointer-events-auto" id="nodeInspectorCard">
+<div class="flex items-center justify-between gap-2 mb-2.5">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#818cf8]"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Biology Vault</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest font-label-sm text-[10px] text-secondary">6 connections</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-medium leading-snug mb-1" id="inspectorTitle">Photosynthesis</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-3" id="inspectorSubtitle">Light-Dependent Reactions &amp; Calvin Coupling</p>
+<p class="font-body-md text-body-md text-on-surface/85 line-clamp-3 mb-4 leading-relaxed" id="inspectorDesc">
+        Photon capture inside thylakoid membrane stacks drives Photolysis of H₂O through Photosystem II, fueling the proton motif force for ATP Synthase and carbon reduction.
+      </p>
+<div class="flex flex-wrap gap-1.5 mb-4">
+<span class="px-2 py-0.5 rounded bg-surface-container-low font-label-sm text-[10px] text-secondary">#biochemistry</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low font-label-sm text-[10px] text-primary">#energetics</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low font-label-sm text-[10px] text-tertiary">#calvin-cycle</span>
+</div>
+<div class="flex items-center justify-between pt-3 bg-gradient-to-r from-transparent via-surface-variant/30 to-transparent">
+<button class="font-label-sm text-label-sm text-outline hover:text-on-surface transition-colors" id="inspectCloseBtn">Deselect</button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-container text-on-primary font-label-sm text-label-sm hover:bg-primary transition-all shadow-[0_0_14px_-2px_rgba(129,140,248,0.3)]">
+<span>Open Full Note</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- BOTTOM-RIGHT: Graph Viewport Controls -->
+<div class="absolute bottom-6 right-6 flex flex-col items-center gap-1.5 p-1.5 rounded-xl bg-surface-container/85 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.5)] pointer-events-auto">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" id="btnZoomIn" title="Zoom in">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" id="btnZoomOut" title="Zoom out">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors" id="btnResetCenter" title="Recenter Viewport">
+<span class="material-symbols-outlined text-[18px]">center_focus_strong</span>
+</button>
+<div class="w-5 h-px bg-surface-variant my-0.5"></div>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-primary hover:bg-primary-container/20 transition-colors" id="btnToggleForce" title="Pause / Resume Dynamics">
+<span class="material-symbols-outlined text-[18px]">pause</span>
+</button>
+</div>
+</div>
+<script>
+    (function () {
+      const svg = document.getElementById('synapseGraphCanvas');
+      const edgeLayer = document.getElementById('edgeLayer');
+      const nodeLayer = document.getElementById('nodeLayer');
+      const inspector = document.getElementById('nodeInspectorCard');
+      const inspectorTitle = document.getElementById('inspectorTitle');
+      const inspectorDesc = document.getElementById('inspectorDesc');
+      const inspectorSubtitle = document.getElementById('inspectorSubtitle');
+      const inspectCloseBtn = document.getElementById('inspectCloseBtn');
+      const btnZoomIn = document.getElementById('btnZoomIn');
+      const btnZoomOut = document.getElementById('btnZoomOut');
+      const btnResetCenter = document.getElementById('btnResetCenter');
+      const btnToggleForce = document.getElementById('btnToggleForce');
+      const searchInput = document.getElementById('graphSearchInput');
+
+      let zoom = 1;
+      let panX = 0;
+      let panY = 0;
+      let isDragging = false;
+      let startX = 0;
+      let startY = 0;
+
+      function applyTransform() {
+        const transformStr = `translate(${panX}px, ${panY}px) scale(${zoom})`;
+        edgeLayer.setAttribute('transform', transformStr);
+        nodeLayer.setAttribute('transform', transformStr);
+      }
+
+      svg.addEventListener('mousedown', (e) => {
+        if (e.target.closest('g[data-node]')) return;
+        isDragging = true;
+        startX = e.clientX - panX;
+        startY = e.clientY - panY;
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        panX = e.clientX - startX;
+        panY = e.clientY - startY;
+        applyTransform();
+      });
+
+      window.addEventListener('mouseup', () => {
+        isDragging = false;
+      });
+
+      svg.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY * -0.0012;
+        zoom = Math.min(Math.max(0.4, zoom + delta), 2.4);
+        applyTransform();
+      }, { passive: false });
+
+      btnZoomIn.addEventListener('click', () => {
+        zoom = Math.min(2.4, zoom + 0.15);
+        applyTransform();
+      });
+
+      btnZoomOut.addEventListener('click', () => {
+        zoom = Math.max(0.4, zoom - 0.15);
+        applyTransform();
+      });
+
+      btnResetCenter.addEventListener('click', () => {
+        zoom = 1;
+        panX = 0;
+        panY = 0;
+        applyTransform();
+      });
+
+      let forceActive = true;
+      btnToggleForce.addEventListener('click', () => {
+        forceActive = !forceActive;
+        btnToggleForce.querySelector('.material-symbols-outlined').textContent = forceActive ? 'pause' : 'play_arrow';
+      });
+
+      const nodeData = {
+        "Photosynthesis": {
+          title: "Photosynthesis",
+          sub: "Biochemical Energy Transduction",
+          desc: "Conversion of light energy into chemical energy through chlorophyll excitation, splitting water into molecular oxygen and fueling carbon fixation.",
+          connections: "6 connections"
+        },
+        "Cellular Respiration": {
+          title: "Cellular Respiration",
+          sub: "Mitochondrial ATP Phosphorylation",
+          desc: "Catabolic metabolic pathway breaking down glucose via glycolysis, Krebs cycle, and electron transport chains to generate cellular currency.",
+          connections: "5 connections"
+        },
+        "Newton's Second Law": {
+          title: "Newton's Second Law",
+          sub: "Classical Mechanics Core Principle",
+          desc: "The rate of change of momentum of a body is directly proportional to the applied resultant force: F = dp/dt = m·a.",
+          connections: "5 connections"
+        },
+        "Binary Search Trees": {
+          title: "Binary Search Trees",
+          sub: "Recursive Ordered Trees",
+          desc: "Node-based binary trees adhering to symmetric order invariants, forming foundations for balanced AVL and Red-Black variants.",
+          connections: "4 connections"
+        },
+        "Action Potential": {
+          title: "Action Potential",
+          sub: "Axonal Voltage Spikes",
+          desc: "Rapid, transient depolarization of the axonal membrane orchestrated by voltage-gated Na+ and K+ channel ion flux.",
+          connections: "4 connections"
+        },
+        "Photosystem II": {
+          title: "Photosystem II",
+          sub: "P680 Photoreceptor Complex",
+          desc: "First protein complex in the light-dependent reactions of oxygenic photosynthesis, localized in the thylakoid membrane.",
+          connections: "3 connections"
+        }
+      };
+
+      document.querySelectorAll('g[data-node]').forEach(nodeEl => {
+        nodeEl.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const name = nodeEl.getAttribute('data-node');
+          const data = nodeData[name] || {
+            title: name,
+            sub: "Concept Node",
+            desc: "Archival reference note in your personal knowledge vault linked across related thematic branches.",
+            connections: "Linked note"
+          };
+          inspectorTitle.textContent = data.title;
+          inspectorSubtitle.textContent = data.sub;
+          inspectorDesc.textContent = data.desc;
+          inspector.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+        });
+      });
+
+      inspectCloseBtn.addEventListener('click', () => {
+        inspector.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+      });
+
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        document.querySelectorAll('g[data-node]').forEach(el => {
+          const name = el.getAttribute('data-node').toLowerCase();
+          if (!query || name.includes(query)) {
+            el.style.opacity = '1';
+          } else {
+            el.style.opacity = '0.15';
+          }
+        });
+      });
+    })();
+  </script>
+</div></main></div></body></html>

@@ -1,0 +1,25 @@
+{
+  "name": "synapse",
+  "private": true,
+  "scripts": {
+    "check:boundaries": "depcruise apps packages --config .dependency-cruiser.cjs",
+    "codegen": "bash contracts/scripts/codegen.sh",
+    "dev": "(cd apps/api && .venv/bin/uvicorn app.main:app --reload --port 8000) & (cd synapsefrontendlovable && npm run dev)",
+    "dev:backend": "cd apps/api && .venv/bin/uvicorn app.main:app --reload --port 8000",
+    "dev:frontend": "cd synapsefrontendlovable && npm run dev",
+    "dev:student": "pnpm --filter student-pwa dev",
+    "dev:teacher": "pnpm --filter teacher-web dev",
+    "test": "vitest run",
+    "typecheck": "pnpm --filter \"./packages/*\" exec tsc --noEmit",
+    "llm-ping": "tsx --env-file=.env packages/llm-client/scripts/ping.ts",
+    "test:live": "tsx --env-file=.env packages/student-ai/scripts/live.ts"
+  },
+  "devDependencies": {
+    "dependency-cruiser": "^18.3.1",
+    "json-schema-to-typescript": "^16.0.0",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
+  },
+  "type": "module"
+}

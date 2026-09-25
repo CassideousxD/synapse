@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"tertiary-container":"#00a0d7","secondary-fixed":"#62fae3","tertiary-fixed-dim":"#7bd0ff","on-secondary-fixed-variant":"#005047","surface-dim":"#101319","surface":"#101319","surface-container-low":"#191c22","on-secondary-container":"#004d44","inverse-primary":"#4953bc","surface-tint":"#bdc2ff","outline-variant":"#454653","primary-fixed-dim":"#bdc2ff","error-container":"#93000a","inverse-surface":"#e1e2eb","surface-container-lowest":"#0b0e14","on-tertiary-fixed":"#001e2c","secondary-fixed-dim":"#3cddc7","primary":"#bdc2ff","on-tertiary-container":"#003246","on-primary-container":"#101b8a","on-secondary-fixed":"#00201c","on-error":"#690005","on-error-container":"#ffdad6","on-background":"#e1e2eb","secondary-container":"#03c6b2","on-surface":"#e1e2eb","tertiary-fixed":"#c4e7ff","secondary":"#44e2cd","on-tertiary-fixed-variant":"#004c69","primary-container":"#818cf8","surface-container":"#1d2026","surface-container-high":"#272a30","inverse-on-surface":"#2d3037","tertiary":"#7bd0ff","background":"#101319","on-primary-fixed":"#000767","on-secondary":"#003731","on-tertiary":"#00354a","on-primary":"#131e8c","surface-variant":"#32353b","outline":"#908f9e","error":"#ffb4ab","on-surface-variant":"#c6c5d5","surface-container-highest":"#32353b","on-primary-fixed-variant":"#2f3aa3","surface-bright":"#363940","primary-fixed":"#e0e0ff"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"margin-tablet":"1.5rem","margin":"2.5rem","space-lg":"1.5rem","space-sm":"0.5rem","margin-mobile":"1rem","space-md":"1rem","gutter":"1.5rem","gutter-mobile":"0.75rem","space-xs":"0.25rem","gutter-tablet":"1rem","space-xl":"2.5rem"},"fontFamily":{"quote-callout":["Newsreader"],"headline-md":["Newsreader"],"headline-xl-mobile":["Newsreader"],"label-lg":["JetBrains Mono"],"headline-xl":["Newsreader"],"body-xl":["Newsreader"],"label-sm":["JetBrains Mono"],"body-md":["Newsreader"],"headline-lg-mobile":["Newsreader"],"label-md":["JetBrains Mono"],"headline-sm":["Newsreader"],"body-lg":["Newsreader"],"headline-lg":["Newsreader"]},"fontSize":{"quote-callout":["18px",{"lineHeight":"32px","letterSpacing":"0em","fontWeight":"400"}],"headline-md":["24px",{"lineHeight":"34px","letterSpacing":"-0.01em","fontWeight":"500"}],"headline-xl-mobile":["30px",{"lineHeight":"38px","letterSpacing":"-0.01em","fontWeight":"400"}],"label-lg":["13px",{"lineHeight":"18px","letterSpacing":"0.02em","fontWeight":"500"}],"headline-xl":["40px",{"lineHeight":"52px","letterSpacing":"-0.02em","fontWeight":"400"}],"body-xl":["19px",{"lineHeight":"34px","fontWeight":"400"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"400"}],"body-md":["15px",{"lineHeight":"26px","fontWeight":"400"}],"headline-lg-mobile":["24px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"400"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.03em","fontWeight":"400"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"500"}],"body-lg":["17px",{"lineHeight":"30px","fontWeight":"400"}],"headline-lg":["32px",{"lineHeight":"42px","letterSpacing":"-0.015em","fontWeight":"400"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary-container/30 selection:text-primary"><header class="fixed top-0 left-0 right-0 h-16 bg-surface/90 backdrop-blur-xl z-50 shadow-[0_1px_8px_rgba(0,0,0,0.35)]"><div class="h-16 w-full px-6 flex items-center justify-between gap-4"><div class="flex items-center gap-6"><div class="flex items-center gap-3"><img alt="Minimalist abstract geometric logo for Synapse study notes app: two interconnected soft glowing synaptic nodes or book leaves, clean monoline icon in soft indigo and warm off-white on transparent dark background. Brand logo. - Primary color: #818cf8
+- Font: newsreader
+- Mode: dark
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UDvhnDs3BlPICTIBzkzkeorILlQp2jfYry-scXLIWt3nbK73QenCLou-3yevS2pKHphvvM0e36hB_uipr0oXWMpAdZq87Auulh3gBh_e113DweMJw-SBFgw-gcA4SPrImIONgnz3r_3ATSySNZ9Xq1o2yoljjhGxy2YbtKvX4e8eyXEpY5srdFCEwgUctnAS3q25jBxakNDMJicY7hPrCgSrlskBuiiuw9BHpk08Jc251LBUxUuXBzXnQ"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm tracking-tight text-on-surface font-normal">Synapse</span><span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase opacity-75">Personal Knowledge Base</span></div></div><div class="hidden md:flex items-center bg-surface-container px-3 py-1.5 rounded-lg text-on-surface-variant gap-3 cursor-pointer hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-sm">search</span><span class="font-label-sm text-label-sm">/ to search concepts...</span><kbd class="bg-surface-container-highest px-1.5 py-0.5 rounded text-on-surface font-label-sm text-[10px]">⌘K</kbd></div></div><div class="flex items-center gap-5"><div class="hidden lg:flex items-center gap-2 text-on-surface-variant"><span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span><span class="font-label-sm text-label-sm tracking-wide">Quiet Sync • Offline Ready</span></div><div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm"><span class="material-symbols-outlined text-[14px]">folder_special</span><span>Scholar Vault</span></div><button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary transition-all shadow-[0_0_16px_-2px_rgba(129,140,248,0.25)]"><span class="material-symbols-outlined text-[16px]">add</span><span>New Note</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><aside class="fixed left-0 top-16 bottom-0 w-64 bg-surface-container-lowest z-40 flex flex-col justify-between p-4 shadow-[1px_0_12px_rgba(0,0,0,0.25)]"><div class="flex flex-col gap-6"><div class="px-2 pt-2"><span class="font-label-sm text-label-sm uppercase tracking-widest text-outline">Notebook Shelf</span></div><nav class="flex flex-col gap-1" data-active-classes="bg-surface-container text-on-surface font-medium"><a class="flex items-center px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-md text-label-md" data-path="concepts" href="#">Concepts</a><a aria-current="page" class="flex items-center px-3 py-2 rounded-lg transition-colors bg-surface-container text-on-surface font-medium" data-path="note" href="#">Roadmap Study Note</a><a class="flex items-center px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-md text-label-md" data-path="graph" href="#">Graph View</a><a class="flex items-center px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-md text-label-md" data-path="saved" href="#">Recent Notes</a></nav></div><div class="p-3 rounded-lg bg-surface-container-low flex flex-col gap-2"><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-sm text-label-sm">Daily Inquiry</span><span class="material-symbols-outlined text-[14px] text-tertiary">auto_awesome</span></div><a class="font-label-sm text-label-sm text-secondary hover:underline" data-path="clarify" href="#">Deep Clarify Session →</a></div></aside><div class="pl-64"><main class="relative pt-16 min-h-screen bg-surface"><div class="flex flex-col w-full">
+<!-- Subtle Ambient Glow Element -->
+<div class="absolute top-0 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<!-- Primary Academic Canvas Container -->
+<div class="w-full max-w-7xl mx-auto px-6 lg:px-12 py-8">
+<!-- Top Meta Context Bar -->
+<header class="flex flex-col gap-4 pb-6 mb-8 border-b border-surface-variant/30">
+<div class="flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md">
+<a class="inline-flex items-center gap-1.5 text-secondary hover:text-secondary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined text-[15px]">arrow_back</span>
+<span>Back to Concepts</span>
+</a>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface-variant">Biophysics</span>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface font-medium truncate max-w-xs sm:max-w-md">Photosynthesis: Light-Dependent Reactions</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+            BIO-342
+          </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container/15 text-secondary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            Synthesis Verified
+          </span>
+</div>
+</div>
+<!-- Scholarly Attributes Line -->
+<div class="flex flex-wrap items-center gap-y-2 gap-x-4 text-on-surface-variant font-label-sm text-label-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-outline">history</span>
+          Revised 2h ago
+        </span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-tertiary">hub</span>
+          6 incoming backlinks
+        </span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-outline">schedule</span>
+          5 min read measure
+        </span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[14px]">psychology</span>
+          Active Recall Ready
+        </span>
+</div>
+</header>
+<!-- Two-Column Layout: Reading Measure Center + Sticky Roadmap TOC -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+<!-- Center Main Reading Column (Roadmap Topic Layout) -->
+<article class="lg:col-span-8 flex flex-col gap-10 max-w-[740px]">
+<!-- Document Header / Title -->
+<div class="flex flex-col gap-3">
+<div class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-medium">Concept Dossier • Molecular Energetics</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight leading-tight">
+            Photosynthesis: Light-Dependent Reactions
+          </h1>
+<p class="font-quote-callout text-quote-callout text-on-surface-variant italic pt-1">
+            "The thermodynamic uphill journey of an electron, liberated from inert water and propelled by quanta of solar photons to generate cellular currency."
+          </p>
+</div>
+<!-- Section 1: Overview -->
+<section class="flex flex-col gap-4 scroll-mt-24" id="sec-overview">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container text-primary font-normal">01</span>
+            System Paradigm &amp; Energetic Trajectory
+          </h2>
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed">
+            The light-dependent phase of oxygenic photosynthesis takes place embedded in the convoluted lipid bilayer of the thylakoid membranes within the chloroplast. In this nanoscale thermodynamic transducer, photon energy is absorbed by pigment-protein assemblies to drive two primary coupled phenomena: the vectorial translocation of protons into the thylakoid lumen and the reduction of terminal electron acceptors.
+          </p>
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed">
+            The pathway initiates via photolysis at 
+            <button class="inline text-secondary transition-all hover:bg-secondary/10 px-1 py-0.5 rounded border-b border-secondary/40 font-body-lg">
+              [[Photosystem II]]
+            </button> 
+            (P680 reaction center), propelling electrons through a redox potential gradient to 
+            <button class="inline text-secondary transition-all hover:bg-secondary/10 px-1 py-0.5 rounded border-b border-secondary/40 font-body-lg">
+              [[Chemiosmotic Coupling]]
+            </button>
+            generators, culminating in the reducing equivalents destined for the stromatic 
+            <button class="inline text-secondary transition-all hover:bg-secondary/10 px-1 py-0.5 rounded border-b border-secondary/40 font-body-lg">
+              [[Calvin Cycle]]
+            </button>.
+          </p>
+</section>
+<!-- Interactive Diagram Box: Z-Scheme Schematic -->
+<div class="p-6 rounded-xl bg-surface-container-low flex flex-col gap-4 shadow-sm">
+<div class="flex items-center justify-between pb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">schema</span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-on-surface">Fig 1.2: Z-Scheme Electron Flow in Thylakoid Membrane</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">Redox Scale (E₀ V)</span>
+</div>
+<!-- Schematic SVG Canvas -->
+<div class="w-full bg-surface-container-lowest rounded-lg p-4 overflow-x-auto">
+<svg class="w-full h-auto min-w-[580px] font-label-sm text-label-sm select-none" fill="none" stroke="currentColor" viewbox="0 0 680 260">
+<!-- Grid Horizon lines (Redox baseline) -->
+<line stroke="#32353b" stroke-dasharray="2 4" stroke-width="1" x1="40" x2="640" y1="50" y2="50"></line>
+<line stroke="#32353b" stroke-dasharray="2 4" stroke-width="1" x1="40" x2="640" y1="130" y2="130"></line>
+<line stroke="#32353b" stroke-dasharray="2 4" stroke-width="1" x1="40" x2="640" y1="210" y2="210"></line>
+<text class="text-[10px] font-mono" fill="#908f9e" x="50" y="46">-0.8 V (High Energy)</text>
+<text class="text-[10px] font-mono" fill="#908f9e" x="50" y="206">+1.0 V (Ground State)</text>
+<!-- Electron Flow Pathway (Z-Scheme) -->
+<!-- PSII Ground to Excited -->
+<path class="animate-pulse" d="M 120 215 L 120 65" stroke="#818cf8" stroke-dasharray="4 2" stroke-width="2.5"></path>
+<!-- PSII downhill cascade: P680* -> PQ -> Cyt b6f -> PC -->
+<path d="M 120 65 L 210 100 L 290 135 L 370 175" stroke="#44e2cd" stroke-linecap="round" stroke-width="2"></path>
+<!-- PSI Ground to Excited -->
+<path d="M 370 175 L 450 175 L 450 45" stroke="#818cf8" stroke-dasharray="4 2" stroke-width="2.5"></path>
+<!-- PSI downhill to Ferredoxin & FNR -->
+<path d="M 450 45 L 540 75 L 610 100" stroke="#44e2cd" stroke-linecap="round" stroke-width="2"></path>
+<!-- Nodes & Labels -->
+<!-- H2O Split -->
+<g transform="translate(60, 215)">
+<circle cx="0" cy="0" fill="#1d2026" r="14" stroke="#454653" stroke-width="1.5"></circle>
+<text class="text-[9px] font-mono" fill="#c6c5d5" text-anchor="middle" x="0" y="3">H₂O</text>
+<text class="text-[9px] font-mono" fill="#908f9e" text-anchor="middle" x="0" y="28">½O₂ + 2H⁺</text>
+</g>
+<!-- PS II Node (P680) -->
+<g transform="translate(120, 215)">
+<rect fill="#1d2026" height="28" rx="4" stroke="#818cf8" stroke-width="1.5" width="48" x="-24" y="-14"></rect>
+<text class="text-[10px] font-bold font-mono" fill="#bdc2ff" text-anchor="middle" x="0" y="4">PS II</text>
+<text class="text-[9px] font-mono" fill="#7bd0ff" text-anchor="middle" x="0" y="-18">P680</text>
+</g>
+<!-- Photon 1 -->
+<g transform="translate(100, 140)">
+<path d="M -15 -15 L 10 10" stroke="#ffdad6" stroke-linecap="round" stroke-width="1.5"></path>
+<text class="text-[10px] font-mono" fill="#ffb4ab" x="-8" y="-18">hν (680nm)</text>
+</g>
+<!-- Plastoquinone (PQ) -->
+<g transform="translate(210, 100)">
+<circle cx="0" cy="0" fill="#1d2026" r="16" stroke="#44e2cd" stroke-width="1.5"></circle>
+<text class="text-[10px] font-mono" fill="#62fae3" text-anchor="middle" x="0" y="3">PQ</text>
+<text class="text-[9px] font-mono" fill="#908f9e" text-anchor="middle" x="0" y="28">Mobile Lipophilic</text>
+</g>
+<!-- Cytochrome b6f -->
+<g transform="translate(290, 135)">
+<rect fill="#1d2026" height="28" rx="4" stroke="#454653" stroke-width="1.5" width="56" x="-28" y="-14"></rect>
+<text class="text-[9px] font-mono" fill="#e1e2eb" text-anchor="middle" x="0" y="4">Cyt b₆f</text>
+<!-- H+ pump annotation -->
+<path d="M 0 14 L 0 35" stroke="#7bd0ff" stroke-dasharray="2 2" stroke-width="1.5"></path>
+<text class="text-[9px] font-mono" fill="#7bd0ff" text-anchor="middle" x="0" y="48">H⁺ into lumen</text>
+</g>
+<!-- Plastocyanin (PC) -->
+<g transform="translate(370, 175)">
+<circle cx="0" cy="0" fill="#1d2026" r="14" stroke="#44e2cd" stroke-width="1.5"></circle>
+<text class="text-[9px] font-mono" fill="#62fae3" text-anchor="middle" x="0" y="3">PC</text>
+<text class="text-[8px] font-mono" fill="#908f9e" text-anchor="middle" x="0" y="26">Copper Carrier</text>
+</g>
+<!-- PS I Node (P700) -->
+<g transform="translate(450, 175)">
+<rect fill="#1d2026" height="28" rx="4" stroke="#818cf8" stroke-width="1.5" width="48" x="-24" y="-14"></rect>
+<text class="text-[10px] font-bold font-mono" fill="#bdc2ff" text-anchor="middle" x="0" y="4">PS I</text>
+<text class="text-[9px] font-mono" fill="#7bd0ff" text-anchor="middle" x="0" y="-18">P700</text>
+</g>
+<!-- Photon 2 -->
+<g transform="translate(430, 110)">
+<path d="M -15 -15 L 10 10" stroke="#ffdad6" stroke-linecap="round" stroke-width="1.5"></path>
+<text class="text-[10px] font-mono" fill="#ffb4ab" x="-8" y="-18">hν (700nm)</text>
+</g>
+<!-- Ferredoxin (Fd) -->
+<g transform="translate(540, 75)">
+<circle cx="0" cy="0" fill="#1d2026" r="14" stroke="#44e2cd" stroke-width="1.5"></circle>
+<text class="text-[9px] font-mono" fill="#62fae3" text-anchor="middle" x="0" y="3">Fd</text>
+</g>
+<!-- FNR & NADPH -->
+<g transform="translate(610, 100)">
+<rect fill="#1d2026" height="28" rx="4" stroke="#818cf8" stroke-width="1" width="44" x="-22" y="-14"></rect>
+<text class="text-[9px] font-mono" fill="#bdc2ff" text-anchor="middle" x="0" y="3">FNR</text>
+<text class="text-[9px] font-mono" fill="#62fae3" text-anchor="middle" x="0" y="28">NADPH + H⁺</text>
+</g>
+</svg>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm pt-1">
+<span>Non-cyclic Photophosphorylation Trajectory</span>
+<span class="text-tertiary">Interactive Schema • Pan/Inspect Node</span>
+</div>
+</div>
+<!-- Section 2: Core Mechanisms -->
+<section class="flex flex-col gap-4 scroll-mt-24" id="sec-mechanisms">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container text-primary font-normal">02</span>
+            Core Biochemical Cascades
+          </h2>
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed">
+            The trajectory splits into two coupled modular processes: excitation through light harvesting antenna complexes (chlorophyll <em>a</em>, <em>b</em>, and carotenoids) and the generation of the proton-motive force. As high-energy electrons transit through the Cytochrome <em>b</em><sub>6</sub><em>f</em> complex, protons are actively pumped from the stroma into the enclosed thylakoid space.
+          </p>
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed">
+            This rapid spatial accumulation creates a pronounced electrochemical gradient across the membrane (ΔpH &gt; 3.0), subsequently relieved through rotary catalysis mediated by 
+            <button class="inline text-secondary transition-all hover:bg-secondary/10 px-1 py-0.5 rounded border-b border-secondary/40 font-body-lg">
+              [[ATP Synthase]]
+            </button>, producing stromal adenosine triphosphate.
+          </p>
+<!-- Micro Spec Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 my-2">
+<div class="p-3.5 rounded-lg bg-surface-container-low flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Absorption Max</span>
+<span class="font-label-lg text-label-lg text-on-surface">680 nm / 700 nm</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Red photon optimum</span>
+</div>
+<div class="p-3.5 rounded-lg bg-surface-container-low flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Lumen pH Shift</span>
+<span class="font-label-lg text-label-lg text-secondary">~4.5 vs ~7.8</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Electrochemical ΔμH+</span>
+</div>
+<div class="p-3.5 rounded-lg bg-surface-container-low flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Stoichiometry</span>
+<span class="font-label-lg text-label-lg text-primary">3 ATP : 2 NADPH</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Per 8 absorbed photons</span>
+</div>
+</div>
+</section>
+<!-- Highlight Callout 1: WHAT WENT WRONG / COMMON PITFALLS -->
+<div class="scroll-mt-24 p-5 rounded-xl bg-surface-container-low/90 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.4)] flex gap-4" id="sec-pitfalls">
+<div class="pt-0.5">
+<div class="w-8 h-8 rounded-lg bg-error-container/30 text-error flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-error tracking-wide font-medium">WHAT WENT WRONG / COMMON EXAM PITFALL</span>
+<span class="font-label-sm text-label-sm text-outline">Top Exam Blunder #14</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+              Confusing photophosphorylation in chloroplasts with oxidative phosphorylation in mitochondria. Note that <strong class="text-on-surface font-medium">H⁺ ions accumulate in the thylakoid lumen</strong> (generating an intensely acidic local pH ~4.5), driving ATP synthesis as protons exit <span class="italic text-primary">outward into the stroma</span>. In mitochondria, protons collect in the intermembrane space and pass <span class="italic text-secondary">inward into the matrix</span>. Reversing the compartment topography in schematics causes systemic failure on free-response exams.
+            </p>
+</div>
+</div>
+<!-- Highlight Callout 2: WHAT TO REMEMBER / SYNTHESIS TAKEAWAYS -->
+<div class="scroll-mt-24 p-5 rounded-xl bg-surface-container/70 shadow-[0_0_24px_-4px_rgba(129,140,248,0.15)] flex gap-4" id="sec-remember">
+<div class="pt-0.5">
+<div class="w-8 h-8 rounded-lg bg-primary-container/20 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">lightbulb</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-primary tracking-wide font-medium">WHAT TO REMEMBER / SYNTHESIS TAKEAWAYS</span>
+<span class="font-label-sm text-label-sm text-outline">Core Axiom</span>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-lowest font-label-md text-label-md text-secondary-fixed-dim">
+              2H₂O + 2NADP⁺ + 3ADP + 3Pᵢ + 8 photons → 2NADPH + 2H⁺ + 3ATP + O₂
+            </div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              Photolysis of water happens strictly at the <strong class="text-on-surface font-medium">Oxygen-Evolving Complex (Mn₄CaO₅ cluster)</strong> of PS II; molecular O₂ is merely a cellular byproduct discarded into the atmosphere. The true prizes are the high-potential hydride carrier (NADPH) and the chemiosmotic proton head fueling ATP synthase.
+            </p>
+</div>
+</div>
+<!-- Section 3: Active Recall Prompt Component -->
+<section class="scroll-mt-24 flex flex-col gap-3" id="sec-recall">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container text-primary font-normal">03</span>
+              Active Recall Checkpoint
+            </h2>
+<span class="font-label-sm text-label-sm text-secondary">Spaced Repetition due in 2d</span>
+</div>
+<div class="p-5 rounded-xl bg-surface-container-low flex flex-col gap-4">
+<div class="flex items-start justify-between gap-4">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-tertiary text-[20px]">help_center</span>
+<span class="font-headline-sm text-[17px] text-on-surface font-medium">
+                  Which protein complex directly reduces Plastoquinone during the Z-scheme cascade?
+                </span>
+</div>
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider whitespace-nowrap">Flashcard #4</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+              Formulate your mental pathway before revealing the answer. Consider the redox handoff between the primary electron acceptor pheophytin and subsequent carriers.
+            </p>
+<!-- Reveal Mechanism with Inline Vanilla JS -->
+<div class="flex flex-col gap-3 pt-1">
+<button class="self-start px-3.5 py-1.5 rounded-lg bg-surface-container text-primary font-label-md text-label-md hover:bg-surface-container-high transition-colors" onclick="
+                  const ans = document.getElementById('recall-answer');
+                  const btn = this;
+                  if (ans.classList.contains('hidden')) {
+                    ans.classList.remove('hidden');
+                    btn.innerText = 'Hide verified solution';
+                  } else {
+                    ans.classList.add('hidden');
+                    btn.innerText = 'Reveal verified answer';
+                  }
+                ">
+                Reveal verified answer
+              </button>
+<div class="hidden p-4 rounded-lg bg-surface-container-lowest flex flex-col gap-2" id="recall-answer">
+<div class="flex items-center gap-2 text-secondary font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Photosystem II (specifically the Q<sub>A</sub> and Q<sub>B</sub> sites)</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                  Electrons transfer from P680 to Pheophytin, then to bound plastoquinone Q<sub>A</sub>, and finally to exchangeable plastoquinone Q<sub>B</sub>. Upon accepting two electrons and picking up two stromal H⁺, Q<sub>B</sub> becomes fully reduced plastoquinol (PQH₂) and disassociates into the lipid core toward Cytochrome <em>b</em><sub>6</sub><em>f</em>.
+                </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Connected Backlinks Grid -->
+<section class="scroll-mt-24 flex flex-col gap-4 pt-4 border-t border-surface-variant/30" id="sec-backlinks">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">alt_route</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Referenced in 3 other notebook nodes</h3>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Bidirectional sync active</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+<!-- Backlink Card 1 -->
+<a class="p-4 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all flex flex-col justify-between gap-3 group" href="#">
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between text-outline">
+<span class="font-label-sm text-label-sm uppercase tracking-wider">BIO-341</span>
+<span class="material-symbols-outlined text-[14px] group-hover:text-primary transition-colors">arrow_outward</span>
+</div>
+<div class="font-headline-sm text-[16px] text-on-surface group-hover:text-primary transition-colors">
+                  Cellular Respiration
+                </div>
+<p class="font-body-md text-[13px] text-on-surface-variant line-clamp-2">
+                  Comparison between Complex III Q-cycle and chloroplastic Cytochrome b6f proton stoichiometry.
+                </p>
+</div>
+<div class="flex items-center gap-1.5 text-secondary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>4 shared links</span>
+</div>
+</a>
+<!-- Backlink Card 2 -->
+<a class="p-4 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all flex flex-col justify-between gap-3 group" href="#">
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between text-outline">
+<span class="font-label-sm text-label-sm uppercase tracking-wider">BIO-344</span>
+<span class="material-symbols-outlined text-[14px] group-hover:text-primary transition-colors">arrow_outward</span>
+</div>
+<div class="font-headline-sm text-[16px] text-on-surface group-hover:text-primary transition-colors">
+                  Calvin Cycle (Dark Phase)
+                </div>
+<p class="font-body-md text-[13px] text-on-surface-variant line-clamp-2">
+                  Consumes 9 ATP and 6 NADPH produced by the light reactions to synthesize one triose phosphate.
+                </p>
+</div>
+<div class="flex items-center gap-1.5 text-secondary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>7 shared links</span>
+</div>
+</a>
+<!-- Backlink Card 3 -->
+<a class="p-4 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all flex flex-col justify-between gap-3 group" href="#">
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between text-outline">
+<span class="font-label-sm text-label-sm uppercase tracking-wider">EVO-201</span>
+<span class="material-symbols-outlined text-[14px] group-hover:text-primary transition-colors">arrow_outward</span>
+</div>
+<div class="font-headline-sm text-[16px] text-on-surface group-hover:text-primary transition-colors">
+                  Chloroplast Endosymbiosis
+                </div>
+<p class="font-body-md text-[13px] text-on-surface-variant line-clamp-2">
+                  Phylogeny of cyanobacterial thylakoid architecture and the evolutionary genesis of P680.
+                </p>
+</div>
+<div class="flex items-center gap-1.5 text-secondary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>2 shared links</span>
+</div>
+</a>
+</div>
+</section>
+<!-- Note Interaction Action Dock -->
+<footer class="flex flex-wrap items-center justify-between gap-4 py-4 px-5 rounded-xl bg-surface-container-low mt-4">
+<div class="flex items-center gap-4 text-on-surface-variant font-label-sm text-label-sm">
+<span class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-mono text-[10px]">E</kbd>
+<span>Edit note</span>
+</span>
+<span class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-mono text-[10px]">G</kbd>
+<span>Graph focus</span>
+</span>
+<span class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-mono text-[10px]">⌘P</kbd>
+<span>Print / PDF</span>
+</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1.5 px-3 py-1 rounded bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[14px]">download</span>
+<span>Export Markdown</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-1 rounded bg-primary-container/20 text-primary font-label-sm text-label-sm hover:bg-primary-container/30 transition-colors">
+<span class="material-symbols-outlined text-[14px]">share</span>
+<span>Publish Note</span>
+</button>
+</div>
+</footer>
+</article>
+<!-- Sticky Right TOC & Roadmap Rail -->
+<aside class="hidden lg:flex lg:col-span-4 flex-col gap-6 sticky top-24 self-start pl-4">
+<!-- On This Page Table of Contents -->
+<div class="p-5 rounded-xl bg-surface-container-low flex flex-col gap-4 shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">On this page</span>
+<span class="font-label-sm text-label-sm text-primary">Topic 2.4</span>
+</div>
+<nav class="flex flex-col gap-1 text-on-surface-variant font-label-md text-label-md">
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded hover:bg-surface-container hover:text-on-surface transition-colors text-on-surface font-medium" href="#sec-overview">
+<span>01. System Paradigm</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</a>
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded hover:bg-surface-container hover:text-on-surface transition-colors" href="#sec-mechanisms">
+<span>02. Core Cascades</span>
+<span class="material-symbols-outlined text-[14px] text-outline opacity-0 hover:opacity-100">chevron_right</span>
+</a>
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded hover:bg-surface-container hover:text-error transition-colors text-on-surface-variant" href="#sec-pitfalls">
+<span>⚠️ What Went Wrong</span>
+<span class="material-symbols-outlined text-[13px] text-error">priority_high</span>
+</a>
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded hover:bg-surface-container hover:text-primary transition-colors text-on-surface-variant" href="#sec-remember">
+<span>💡 What to Remember</span>
+<span class="material-symbols-outlined text-[13px] text-primary">bookmark</span>
+</a>
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded hover:bg-surface-container hover:text-secondary transition-colors text-on-surface-variant" href="#sec-recall">
+<span>03. Active Recall Prompt</span>
+<span class="material-symbols-outlined text-[13px] text-secondary">flash_on</span>
+</a>
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded hover:bg-surface-container hover:text-on-surface transition-colors text-on-surface-variant" href="#sec-backlinks">
+<span>04. Connected Backlinks</span>
+<span class="text-[10px] font-mono bg-surface-container px-1.5 py-0.2 rounded text-outline">3</span>
+</a>
+</nav>
+</div>
+<!-- Curricular Roadmap Context Box (roadmap.sh style) -->
+<div class="p-5 rounded-xl bg-surface-container-low flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Bioenergetics Pathway</span>
+<span class="font-label-sm text-label-sm text-secondary">62% Done</span>
+</div>
+<!-- Progress Ribbon -->
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-secondary h-full rounded-full w-[62%]"></div>
+</div>
+<div class="flex flex-col gap-2 pt-1 font-label-sm text-label-sm">
+<div class="flex items-center gap-2 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined text-[14px] text-secondary">check_circle</span>
+<span class="line-through">Photon Thermodynamics</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined text-[14px] text-secondary">check_circle</span>
+<span class="line-through">Pigment Excitation &amp; Resonance</span>
+</div>
+<div class="flex items-center gap-2 text-primary font-medium">
+<span class="material-symbols-outlined text-[14px] animate-pulse">radio_button_checked</span>
+<span>Light-Dependent Reactions</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-outline">radio_button_unchecked</span>
+<span>Calvin Cycle (Carbon Fixation)</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-outline">radio_button_unchecked</span>
+<span>Photorespiration &amp; C4/CAM Alternatives</span>
+</div>
+</div>
+</div>
+<!-- Mini Graph Cluster Thumbnail -->
+<div class="p-4 rounded-xl bg-surface-container-low flex flex-col gap-2.5">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Local Subgraph</span>
+<button class="font-label-sm text-label-sm text-primary hover:underline">Full View →</button>
+</div>
+<div class="w-full h-32 rounded-lg bg-surface-container-lowest relative overflow-hidden flex items-center justify-center border-0">
+<!-- Simulated micro node network -->
+<svg class="w-full h-full" viewbox="0 0 240 120">
+<line stroke="#454653" stroke-width="1.2" x1="120" x2="60" y1="60" y2="40"></line>
+<line stroke="#454653" stroke-width="1.2" x1="120" x2="180" y1="60" y2="35"></line>
+<line stroke="#454653" stroke-width="1.2" x1="120" x2="160" y1="60" y2="90"></line>
+<line stroke="#454653" stroke-width="1.2" x1="120" x2="80" y1="60" y2="95"></line>
+<!-- Satellites -->
+<circle cx="60" cy="40" fill="#62fae3" r="4"></circle>
+<circle cx="180" cy="35" fill="#7bd0ff" r="5"></circle>
+<circle cx="160" cy="90" fill="#c6c5d5" r="3.5"></circle>
+<circle cx="80" cy="95" fill="#bdc2ff" r="4"></circle>
+<!-- Center Active Node -->
+<circle class="animate-pulse" cx="120" cy="60" fill="#818cf8" r="8"></circle>
+<circle cx="120" cy="60" fill="none" r="14" stroke="#818cf8" stroke-dasharray="2 2" stroke-width="1"></circle>
+</svg>
+<span class="absolute bottom-1.5 left-2 font-label-sm text-[10px] text-outline font-mono">5 nodes • 8 edges</span>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</div></main></div></body></html>

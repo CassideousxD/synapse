@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ConceptNode",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "summary"],
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "summary": { "type": "string" },
+    "relatedConceptIds": { "type": "array", "items": { "type": "string" } }
+  }
+}

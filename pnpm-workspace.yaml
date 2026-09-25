@@ -1,0 +1,8 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "contracts"
+allowBuilds:
+  esbuild: true
+  onnxruntime-node: true
+  protobufjs: true

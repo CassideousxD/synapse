@@ -1,0 +1,1 @@
+{"name":"@synapse/note-store","version":"0.0.0","private":true,"type":"module","main":"src/index.ts","types":"src/index.ts","dependencies":{"idb":"^8.0.3"},"devDependencies":{"fake-indexeddb":"^6.2.5"}}

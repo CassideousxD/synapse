@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AnalysisPayload",
+  "description": "The ONLY data that ever leaves a student's device.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["studentId", "conceptId", "mastery", "trend", "computedAt"],
+  "properties": {
+    "studentId": { "type": "string" },
+    "conceptId": { "type": "string" },
+    "mastery": { "type": "number", "minimum": 0, "maximum": 1 },
+    "trend": { "enum": ["improving", "still_weak", "new_gap"] },
+    "computedAt": { "type": "string", "format": "date-time" }
+  }
+}

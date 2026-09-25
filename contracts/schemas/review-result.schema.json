@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ReviewResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "noteId", "noteVersion", "verdict", "objections", "reviewedAt"],
+  "properties": {
+    "id": { "type": "string" },
+    "noteId": { "type": "string" },
+    "noteVersion": { "type": "integer", "minimum": 1 },
+    "verdict": { "enum": ["pass", "revise", "needs_clarification"] },
+    "objections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "message"],
+        "properties": {
+          "kind": { "enum": ["inaccurate", "misses_mistake", "unclear", "off_topic"] },
+          "message": { "type": "string" }
+        }
+      }
+    },
+    "clarifyingQuestion": { "type": "string" },
+    "reviewedAt": { "type": "string", "format": "date-time" }
+  }
+}

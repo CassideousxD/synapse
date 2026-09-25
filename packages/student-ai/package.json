@@ -1,0 +1,1 @@
+{"name":"@synapse/student-ai","version":"0.0.0","private":true,"type":"module","main":"src/index.ts","types":"src/index.ts","dependencies":{"@synapse/agent-runtime":"workspace:*","@synapse/contracts":"workspace:*","@synapse/llm-client":"workspace:*","@synapse/note-store":"workspace:*","ajv":"^8.20.0","ajv-formats":"^3.0.1"},"devDependencies":{"@types/node":"^26.6.2"}}

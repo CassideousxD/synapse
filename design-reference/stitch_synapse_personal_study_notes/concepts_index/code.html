@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"tertiary-container":"#00a0d7","secondary-fixed":"#62fae3","tertiary-fixed-dim":"#7bd0ff","on-secondary-fixed-variant":"#005047","surface-dim":"#101319","surface":"#101319","surface-container-low":"#191c22","on-secondary-container":"#004d44","inverse-primary":"#4953bc","surface-tint":"#bdc2ff","outline-variant":"#454653","primary-fixed-dim":"#bdc2ff","error-container":"#93000a","inverse-surface":"#e1e2eb","surface-container-lowest":"#0b0e14","on-tertiary-fixed":"#001e2c","secondary-fixed-dim":"#3cddc7","primary":"#bdc2ff","on-tertiary-container":"#003246","on-primary-container":"#101b8a","on-secondary-fixed":"#00201c","on-error":"#690005","on-error-container":"#ffdad6","on-background":"#e1e2eb","secondary-container":"#03c6b2","on-surface":"#e1e2eb","tertiary-fixed":"#c4e7ff","secondary":"#44e2cd","on-tertiary-fixed-variant":"#004c69","primary-container":"#818cf8","surface-container":"#1d2026","surface-container-high":"#272a30","inverse-on-surface":"#2d3037","tertiary":"#7bd0ff","background":"#101319","on-primary-fixed":"#000767","on-secondary":"#003731","on-tertiary":"#00354a","on-primary":"#131e8c","surface-variant":"#32353b","outline":"#908f9e","error":"#ffb4ab","on-surface-variant":"#c6c5d5","surface-container-highest":"#32353b","on-primary-fixed-variant":"#2f3aa3","surface-bright":"#363940","primary-fixed":"#e0e0ff"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"margin-tablet":"1.5rem","margin":"2.5rem","space-lg":"1.5rem","space-sm":"0.5rem","margin-mobile":"1rem","space-md":"1rem","gutter":"1.5rem","gutter-mobile":"0.75rem","space-xs":"0.25rem","gutter-tablet":"1rem","space-xl":"2.5rem"},"fontFamily":{"quote-callout":["Newsreader"],"headline-md":["Newsreader"],"headline-xl-mobile":["Newsreader"],"label-lg":["JetBrains Mono"],"headline-xl":["Newsreader"],"body-xl":["Newsreader"],"label-sm":["JetBrains Mono"],"body-md":["Newsreader"],"headline-lg-mobile":["Newsreader"],"label-md":["JetBrains Mono"],"headline-sm":["Newsreader"],"body-lg":["Newsreader"],"headline-lg":["Newsreader"]},"fontSize":{"quote-callout":["18px",{"lineHeight":"32px","letterSpacing":"0em","fontWeight":"400"}],"headline-md":["24px",{"lineHeight":"34px","letterSpacing":"-0.01em","fontWeight":"500"}],"headline-xl-mobile":["30px",{"lineHeight":"38px","letterSpacing":"-0.01em","fontWeight":"400"}],"label-lg":["13px",{"lineHeight":"18px","letterSpacing":"0.02em","fontWeight":"500"}],"headline-xl":["40px",{"lineHeight":"52px","letterSpacing":"-0.02em","fontWeight":"400"}],"body-xl":["19px",{"lineHeight":"34px","fontWeight":"400"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"400"}],"body-md":["15px",{"lineHeight":"26px","fontWeight":"400"}],"headline-lg-mobile":["24px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"400"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.03em","fontWeight":"400"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"500"}],"body-lg":["17px",{"lineHeight":"30px","fontWeight":"400"}],"headline-lg":["32px",{"lineHeight":"42px","letterSpacing":"-0.015em","fontWeight":"400"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary-container/30 selection:text-primary"><header class="fixed top-0 left-0 right-0 h-16 bg-surface/90 backdrop-blur-xl z-50 shadow-[0_1px_8px_rgba(0,0,0,0.35)]"><div class="h-16 w-full px-6 flex items-center justify-between gap-4"><div class="flex items-center gap-6"><div class="flex items-center gap-3"><img alt="Minimalist abstract geometric logo for Synapse study notes app: two interconnected soft glowing synaptic nodes or book leaves, clean monoline icon in soft indigo and warm off-white on transparent dark background. Brand logo. - Primary color: #818cf8
+- Font: newsreader
+- Mode: dark
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UDvhnDs3BlPICTIBzkzkeorILlQp2jfYry-scXLIWt3nbK73QenCLou-3yevS2pKHphvvM0e36hB_uipr0oXWMpAdZq87Auulh3gBh_e113DweMJw-SBFgw-gcA4SPrImIONgnz3r_3ATSySNZ9Xq1o2yoljjhGxy2YbtKvX4e8eyXEpY5srdFCEwgUctnAS3q25jBxakNDMJicY7hPrCgSrlskBuiiuw9BHpk08Jc251LBUxUuXBzXnQ"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm tracking-tight text-on-surface font-normal">Synapse</span><span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase opacity-75">Personal Knowledge Base</span></div></div><div class="hidden md:flex items-center bg-surface-container px-3 py-1.5 rounded-lg text-on-surface-variant gap-3 cursor-pointer hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-sm">search</span><span class="font-label-sm text-label-sm">/ to search concepts...</span><kbd class="bg-surface-container-highest px-1.5 py-0.5 rounded text-on-surface font-label-sm text-[10px]">⌘K</kbd></div></div><div class="flex items-center gap-5"><div class="hidden lg:flex items-center gap-2 text-on-surface-variant"><span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span><span class="font-label-sm text-label-sm tracking-wide">Quiet Sync • Offline Ready</span></div><div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm"><span class="material-symbols-outlined text-[14px]">folder_special</span><span>Scholar Vault</span></div><button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary transition-all shadow-[0_0_16px_-2px_rgba(129,140,248,0.25)]"><span class="material-symbols-outlined text-[16px]">add</span><span>New Note</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><aside class="fixed left-0 top-16 bottom-0 w-64 bg-surface-container-lowest z-40 flex flex-col justify-between p-4 shadow-[1px_0_12px_rgba(0,0,0,0.25)]"><div class="flex flex-col gap-6"><div class="px-2 pt-2"><span class="font-label-sm text-label-sm uppercase tracking-widest text-outline">Notebook Shelf</span></div><nav class="flex flex-col gap-1" data-active-classes="bg-surface-container text-on-surface font-medium"><a aria-current="page" class="flex items-center px-3 py-2 rounded-lg transition-colors bg-surface-container text-on-surface font-medium" data-path="concepts" href="#">Concepts</a><a class="flex items-center px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-md text-label-md" data-path="note" href="#">Roadmap Study Note</a><a class="flex items-center px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-md text-label-md" data-path="graph" href="#">Graph View</a><a class="flex items-center px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-md text-label-md" data-path="saved" href="#">Recent Notes</a></nav></div><div class="p-3 rounded-lg bg-surface-container-low flex flex-col gap-2"><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-sm text-label-sm">Daily Inquiry</span><span class="material-symbols-outlined text-[14px] text-tertiary">auto_awesome</span></div><a class="font-label-sm text-label-sm text-secondary hover:underline" data-path="clarify" href="#">Deep Clarify Session →</a></div></aside><div class="pl-64"><main class="relative pt-16 min-h-screen bg-surface"><div class="flex flex-col w-full">
+<div class="relative w-full max-w-5xl mx-auto px-6 py-12 md:py-16">
+<div class="absolute top-10 right-1/4 w-96 h-96 bg-primary-container/5 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<div class="absolute bottom-20 left-10 w-80 h-80 bg-secondary/5 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<!-- Header Section -->
+<header class="flex flex-col gap-4 mb-10">
+<div class="flex items-center gap-3">
+<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-surface-container-high text-secondary">
+<span class="material-symbols-outlined text-[14px]">auto_stories</span>
+</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-outline">Sanctum Archive / Compendium</span>
+</div>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface font-normal tracking-tight">Index of Concepts</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-2xl">
+            42 notes synthesized across Biophysics, Physics, Computer Science, and Neuroscience.
+          </p>
+</div>
+<div class="flex items-center gap-3 self-start md:self-auto shrink-0">
+<button class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-all shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-tertiary">scatter_plot</span>
+<span class="font-label-md text-label-md">Local Cluster</span>
+</button>
+<div class="h-4 w-px bg-surface-variant"></div>
+<span class="font-label-sm text-label-sm text-outline">v2.4 Vault</span>
+</div>
+</div>
+<!-- Domain Filter Pills -->
+<div class="flex items-center gap-2 overflow-x-auto pt-4 pb-1 no-scrollbar text-nowrap">
+<button class="px-3 py-1 rounded-full bg-surface-container-high text-secondary font-label-sm text-label-sm shadow-[0_0_12px_rgba(68,226,205,0.15)]">
+          All Concepts (42)
+        </button>
+<button class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-sm text-label-sm transition-colors">
+          Biophysics (11)
+        </button>
+<button class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-sm text-label-sm transition-colors">
+          Algorithms &amp; Data Structures (14)
+        </button>
+<button class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-sm text-label-sm transition-colors">
+          Classical Mechanics (7)
+        </button>
+<button class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-sm text-label-sm transition-colors">
+          Neurobiology (8)
+        </button>
+<button class="flex items-center gap-1 px-3 py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-sm text-label-sm transition-colors">
+<span class="material-symbols-outlined text-[12px] text-primary">push_pin</span>
+<span>Pinned (4)</span>
+</button>
+</div>
+</header>
+<!-- Controls Sub-bar -->
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-8 bg-surface-container-low p-2 rounded-xl">
+<div class="flex items-center flex-1 px-3 gap-2 text-on-surface-variant focus-within:text-secondary transition-colors">
+<span class="material-symbols-outlined text-sm">search</span>
+<input class="w-full bg-transparent border-none outline-none font-body-md text-body-md text-on-surface placeholder:text-outline/60" placeholder="Filter by concept, keyword, or [[wikilink]]..." type="text"/>
+<kbd class="hidden sm:inline-block px-1.5 py-0.5 rounded bg-surface-container-highest text-outline font-label-sm text-[10px]">ESC</kbd>
+</div>
+<div class="flex items-center justify-end gap-2 px-1">
+<div class="flex items-center bg-surface-container rounded-lg p-0.5 text-on-surface-variant">
+<button class="px-2.5 py-1 rounded text-on-surface bg-surface-container-high font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">history</span>
+<span>Recently revised</span>
+</button>
+<button class="px-2.5 py-1 rounded text-outline hover:text-on-surface font-label-sm text-label-sm transition-colors">
+            Backlinks
+          </button>
+<button class="px-2.5 py-1 rounded text-outline hover:text-on-surface font-label-sm text-label-sm transition-colors">
+            A → Z
+          </button>
+</div>
+<div class="h-4 w-px bg-surface-variant"></div>
+<button class="p-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Toggle Compact View">
+<span class="material-symbols-outlined text-[18px]">view_agenda</span>
+</button>
+</div>
+</div>
+<!-- Concept Card Stack -->
+<div class="flex flex-col gap-4" id="concept-list">
+<!-- Card 1 -->
+<article class="group relative flex flex-col p-6 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all duration-200 cursor-pointer shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
+<div class="absolute left-0 top-6 bottom-6 w-1 rounded-r bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-3">
+<div class="flex flex-wrap items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Biophysics</span>
+<span class="text-outline text-xs">•</span>
+<span class="font-label-sm text-label-sm text-outline">BIO-304</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-sm text-label-sm text-outline">Updated 2h ago</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high font-label-sm text-label-sm text-secondary">
+<span class="material-symbols-outlined text-[12px]">sync_alt</span>
+<span>6 links</span>
+</span>
+</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors flex items-center justify-between">
+<span>Photosynthesis: Light-Dependent Reactions</span>
+<span class="material-symbols-outlined text-[18px] text-outline opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:translate-x-1 duration-200">arrow_forward</span>
+</h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Thylakoid electron transport chain converting photons into ATP and NADPH via Photosystems II &amp; I. Chemiosmotic proton pump gradient across the inner membrane fueling CF₀CF₁-ATP synthase complex.
+          </p>
+<div class="flex flex-wrap items-center gap-2 pt-2">
+<span class="font-label-sm text-label-sm text-secondary hover:underline cursor-pointer">[[Cellular Respiration]]</span>
+<span class="text-outline/40">/</span>
+<span class="font-label-sm text-label-sm text-secondary hover:underline cursor-pointer">[[Calvin Cycle]]</span>
+<span class="text-outline/40">/</span>
+<span class="font-label-sm text-label-sm text-secondary hover:underline cursor-pointer">[[Plastoquinone-Q Cycle]]</span>
+<span class="ml-auto inline-flex items-center gap-1 text-outline font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">edit_note</span>
+<span>1,420 words</span>
+</span>
+</div>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="group relative flex flex-col p-6 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all duration-200 cursor-pointer shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
+<div class="absolute left-0 top-6 bottom-6 w-1 rounded-r bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-3">
+<div class="flex flex-wrap items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Physics</span>
+<span class="text-outline text-xs">•</span>
+<span class="font-label-sm text-label-sm text-outline">PHY-101</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-sm text-label-sm text-outline">Updated yesterday</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high font-label-sm text-label-sm text-secondary">
+<span class="material-symbols-outlined text-[12px]">sync_alt</span>
+<span>4 links</span>
+</span>
+</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors flex items-center justify-between">
+<span>Newton's Second Law &amp; Momentum Flux</span>
+<span class="material-symbols-outlined text-[18px] text-outline opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:translate-x-1 duration-200">arrow_forward</span>
+</h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Net force formulated as the continuous time derivative of linear momentum (dp/dt), generalized to variable mass rocket systems and relativistic corrections under hydrodynamic boundary flow conditions.
+          </p>
+<div class="flex flex-wrap items-center gap-2 pt-2">
+<span class="font-label-sm text-label-sm text-secondary hover:underline cursor-pointer">[[Conservation of Momentum]]</span>
+<span class="text-outline/40">/</span>
+<span class="font-label-sm text-label-sm text-secondary hover:underline cursor-pointer">[[Tsiolkovsky Equation]]</span>
+<span class="ml-auto inline-flex items-center gap-1 text-outline font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">edit_note</span>
+<span>890 words</span>
+</span>
+</div>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="group relative flex flex-col p-6 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all duration-200 cursor-pointer shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
+<div class="absolute left-0 top-6 bottom-6 w-1 rounded-r bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-3">
+<div class="flex flex-wrap items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Computer Science</span>
+<span class="text-outline text-xs">•</span>
+<span class="font-label-sm text-label-sm text-outline">CS-202</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-sm text-label-sm text-outline">Updated 3d ago</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high font-label-sm text-label-sm text-secondary">
+<span class="material-symbols-outlined text-[12px]">sync_alt</span>
+<span>9 links</span>
+</span>
+</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors flex items-center justify-between">
+<span>Binary Search Trees &amp; AVL Invariants</span>
+<span class="material-symbols-outlined text-[18px] text-outline opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:translate-x-1 duration-200">arrow_forward</span>
+</h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Self-balancing height-balanced BSTs maintaining O(log n) lookup, insertions, and rotations through strict balance factors {-1, 0, 1}. Analysis of LL, RR, LR, and RL double rotations.
+          </p>
+<div class="flex flex-wrap items-center gap-2 pt-2">
+<span class="font-label-sm text-label-sm text-secondary hover:underline cursor-pointer">[[Red-Black Trees]]</span>
+<span class="text-outline/40">/</span>
+<span class="font-label-sm text-label-sm text-secondary hover:underline cursor-pointer">[[Time Complexity]]</span>
+<span class="text-outline/40">/</span>
+<span class="font-label-sm text-label-sm text-secondary hover:underline cursor-pointer">[[Tree Rotations]]</span>
+<span class="ml-auto inline-flex items-center gap-1 text-outline font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">edit_note</span>
+<span>2,140 words</span>
+</span>
+</div>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="group relative flex flex-col p-6 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all duration-200 cursor-pointer shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
+<div class="absolute left-0 top-6 bottom-6 w-1 rounded-r bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-3">
+<div class="flex flex-wrap items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Neuroscience</span>
+<span class="text-outline text-xs">•</span>
+<span class="font-label-sm text-label-sm text-outline">NEUR-410</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-sm text-label-sm text-outline">Updated Oct 12</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high font-label-sm text-label-sm text-secondary">
+<span class="material-symbols-outlined text-[12px]">sync_alt</span>
+<span>5 links</span>
+</span>
+</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors flex items-center justify-between">
+<span>Action Potential &amp; Hodgkin-Huxley Model</span>
+<span class="material-symbols-outlined text-[18px] text-outline opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:translate-x-1 duration-200">arrow_forward</span>
+</h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Voltage-gated sodium (Na⁺) and potassium (K⁺) conductances driving all-or-none regenerative membrane depolarizations. Quantitative differential equations modeling channel activation and inactivation variables.
+          </p>
+<div class="flex flex-wrap items-center gap-2 pt-2">
+<span class="font-label-sm text-label-sm text-secondary hover:underline cursor-pointer">[[Nernst Potential]]</span>
+<span class="text-outline/40">/</span>
+<span class="font-label-sm text-label-sm text-secondary hover:underline cursor-pointer">[[Myelination &amp; Saltatory]]</span>
+<span class="ml-auto inline-flex items-center gap-1 text-outline font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">edit_note</span>
+<span>1,850 words</span>
+</span>
+</div>
+</div>
+</article>
+<!-- Card 5 -->
+<article class="group relative flex flex-col p-6 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all duration-200 cursor-pointer shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
+<div class="absolute left-0 top-6 bottom-6 w-1 rounded-r bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-3">
+<div class="flex flex-wrap items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Neuroscience</span>
+<span class="text-outline text-xs">•</span>
+<span class="font-label-sm text-label-sm text-outline">NEUR-412</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-sm text-label-sm text-outline">Updated Oct 8</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high font-label-sm text-label-sm text-secondary">
+<span class="material-symbols-outlined text-[12px]">sync_alt</span>
+<span>7 links</span>
+</span>
+</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors flex items-center justify-between">
+<span>Hebbian Learning &amp; Synaptic Plasticity</span>
+<span class="material-symbols-outlined text-[18px] text-outline opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:translate-x-1 duration-200">arrow_forward</span>
+</h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Long-term potentiation mechanisms: coincidence-detection via NMDA receptor unblocking (Mg²⁺ removal), Ca²⁺ influx cascade, CaMKII activation, and AMPA receptor insertion during spine enlargement.
+          </p>
+<div class="flex flex-wrap items-center gap-2 pt-2">
+<span class="font-label-sm text-label-sm text-secondary hover:underline cursor-pointer">[[Spike-Timing Plasticity]]</span>
+<span class="text-outline/40">/</span>
+<span class="font-label-sm text-label-sm text-secondary hover:underline cursor-pointer">[[Hippocampal CA1]]</span>
+<span class="ml-auto inline-flex items-center gap-1 text-outline font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">edit_note</span>
+<span>1,620 words</span>
+</span>
+</div>
+</div>
+</article>
+<!-- Card 6 -->
+<article class="group relative flex flex-col p-6 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all duration-200 cursor-pointer shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
+<div class="absolute left-0 top-6 bottom-6 w-1 rounded-r bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col gap-3">
+<div class="flex flex-wrap items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Mathematics</span>
+<span class="text-outline text-xs">•</span>
+<span class="font-label-sm text-label-sm text-outline">MATH-220</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-sm text-label-sm text-outline">Updated Sep 28</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high font-label-sm text-label-sm text-secondary">
+<span class="material-symbols-outlined text-[12px]">sync_alt</span>
+<span>8 links</span>
+</span>
+</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors flex items-center justify-between">
+<span>Eigenvalues, Eigenvectors &amp; Spectral Decomposition</span>
+<span class="material-symbols-outlined text-[18px] text-outline opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:translate-x-1 duration-200">arrow_forward</span>
+</h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Linear transformations preserving direction; characteristic polynomial solutions; diagonalization theorems forming theoretical underpinnings for Principal Component Analysis and quantum observables.
+          </p>
+<div class="flex flex-wrap items-center gap-2 pt-2">
+<span class="font-label-sm text-label-sm text-secondary hover:underline cursor-pointer">[[Singular Value Decomposition]]</span>
+<span class="text-outline/40">/</span>
+<span class="font-label-sm text-label-sm text-secondary hover:underline cursor-pointer">[[Quantum Hilbert Space]]</span>
+<span class="ml-auto inline-flex items-center gap-1 text-outline font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">edit_note</span>
+<span>2,300 words</span>
+</span>
+</div>
+</div>
+</article>
+</div>
+<!-- Quiet Footer Status and Navigation Shortcuts -->
+<footer class="mt-14 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-outline font-label-sm text-label-sm">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface">J</kbd>
+<kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface">K</kbd>
+<span>navigate</span>
+</span>
+<span class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface">↵</kbd>
+<span>open</span>
+</span>
+<span class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface">⌘ N</kbd>
+<span>new concept</span>
+</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Local index synchronized</span>
+</div>
+</footer>
+</div>
+</div></main></div></body></html>

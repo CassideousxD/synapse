@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Attempt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "studentId", "testId", "conceptId", "questionId", "selectedOption", "correctOption", "isCorrect", "submittedAt"],
+  "properties": {
+    "id": { "type": "string" },
+    "studentId": { "type": "string" },
+    "testId": { "type": "string" },
+    "conceptId": { "type": "string" },
+    "questionId": { "type": "string" },
+    "selectedOption": { "type": "string" },
+    "correctOption": { "type": "string" },
+    "isCorrect": { "type": "boolean" },
+    "submittedAt": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,95 @@
+# ==============================================================================
+# Synapse Root .gitignore
+# ==============================================================================
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Secrets & Environment Configurations
+.env
+.env.*
+!.env.example
+*.env
+.dev.vars
+JWT_SECRET
+SYNAPSE_CLIENT_SECRET
+*.pem
+*.key
+*.cert
+*.secret
+
+# Scratch, MCP, & Temporary Test Folders
+scratch/
+.playwright-mcp/
+playwright-report/
+test-results/
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build Outputs & Bundlers (Nitro, TanStack Start, Vite, Wrangler, etc.)
+dist/
+dist-ssr/
+build/
+.output/
+.nitro/
+.vinxi/
+.tanstack/
+.wrangler/
+*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+ENV/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Databases & SQLite
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+synapse.db
+apps/api/synapse.db
+
+# AI Models & Large Weights
+*.onnx
+*.bin
+*.pt
+*.pth
+*.safetensors
+
+# Editor Directories & Files
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+*~

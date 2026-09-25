@@ -1,0 +1,12 @@
+{
+  "name": "@synapse/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "generated/ts/index.ts",
+  "types": "generated/ts/index.ts",
+  "exports": {
+    ".": "./generated/ts/index.ts",
+    "./schemas/*": "./schemas/*"
+  }
+}
