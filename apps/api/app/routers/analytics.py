@@ -16,9 +16,23 @@ from app.core.db import (
     UserRow,
     get_db,
 )
+from app.core.rate_limit import extract_user_id, get_limit_config, rate_limit
 from app.core.security import require_client_secret, require_teacher, require_user
 
-router = APIRouter(prefix="/analytics", tags=["analytics"])
+router = APIRouter(
+    prefix="/analytics",
+    tags=["analytics"],
+    dependencies=[
+        Depends(
+            rate_limit(
+                "synapse:rl:user",
+                limit=get_limit_config("RATE_LIMIT_GENERAL_PER_MINUTE", 120),
+                window=60,
+                key_extractor=lambda req: f"{extract_user_id(req)}:general",
+            )
+        )
+    ],
+)
 
 
 @router.post("/payload", status_code=204)

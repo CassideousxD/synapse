@@ -21,10 +21,24 @@ from app.core.db import (
     UserRow,
     get_db,
 )
+from app.core.rate_limit import extract_user_id, get_limit_config, rate_limit
 from app.core.security import require_teacher, require_user
 from app.curriculum.concept_service import format_concept_row
 
-router = APIRouter(prefix="/classrooms", tags=["classrooms"])
+router = APIRouter(
+    prefix="/classrooms",
+    tags=["classrooms"],
+    dependencies=[
+        Depends(
+            rate_limit(
+                "synapse:rl:user",
+                limit=get_limit_config("RATE_LIMIT_GENERAL_PER_MINUTE", 120),
+                window=60,
+                key_extractor=lambda req: f"{extract_user_id(req)}:general",
+            )
+        )
+    ],
+)
 
 
 class CreateClassroomRequest(BaseModel):

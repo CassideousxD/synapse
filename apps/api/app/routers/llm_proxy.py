@@ -1,11 +1,11 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Literal
 
-from app.llm.client import NimError, call_nim
+from app.core.rate_limit import extract_client_ip, get_limit_config, hash_identifier, rate_limit
 from app.core.security import require_client_secret
-from fastapi import Depends
+from app.llm.client import NimError, call_nim
 
 router = APIRouter(prefix="/llm", tags=["llm-proxy"])
 
@@ -24,7 +24,19 @@ class ChatRequest(BaseModel):
     maxTokens: int | None = None
 
 
-@router.post("/chat")
+@router.post(
+    "/chat",
+    dependencies=[
+        Depends(
+            rate_limit(
+                "synapse:rl:ai:client",
+                limit=get_limit_config("RATE_LIMIT_AI_PER_MINUTE", 10),
+                window=60,
+                key_extractor=lambda req: hash_identifier(extract_client_ip(req)),
+            )
+        )
+    ],
+)
 async def chat(req: ChatRequest, _client=Depends(require_client_secret)):
     """
     The ONLY place the NVIDIA_API_KEY is ever used. Never sent to, or

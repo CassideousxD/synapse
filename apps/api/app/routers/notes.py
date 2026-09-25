@@ -21,6 +21,7 @@ from app.core.db import (
     get_db,
     get_session_context,
 )
+from app.core.rate_limit import extract_user_id, get_limit_config, rate_limit
 from app.core.security import require_teacher, require_user
 from app.curriculum.concept_service import sync_classroom_concepts
 from app.curriculum.tagging import extract_concepts
@@ -229,7 +230,20 @@ async def _run_concept_extraction(
             pass
 
 
-@router.post("", status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[
+        Depends(
+            rate_limit(
+                "synapse:rl:ai:user",
+                limit=get_limit_config("RATE_LIMIT_AI_PER_MINUTE", 10),
+                window=60,
+                key_extractor=extract_user_id,
+            )
+        )
+    ],
+)
 async def create_note(
     req: CreateNoteRequest,
     teacher_id: str = Depends(require_teacher),
@@ -331,7 +345,19 @@ async def create_note(
     return _format_note(note)
 
 
-@router.post("/{note_id}/retry")
+@router.post(
+    "/{note_id}/retry",
+    dependencies=[
+        Depends(
+            rate_limit(
+                "synapse:rl:ai:user",
+                limit=get_limit_config("RATE_LIMIT_AI_PER_MINUTE", 10),
+                window=60,
+                key_extractor=extract_user_id,
+            )
+        )
+    ],
+)
 async def retry_note_extraction(
     note_id: str,
     teacher_id: str = Depends(require_teacher),
@@ -356,7 +382,19 @@ async def retry_note_extraction(
     return _format_note(note)
 
 
-@router.get("")
+@router.get(
+    "",
+    dependencies=[
+        Depends(
+            rate_limit(
+                "synapse:rl:user",
+                limit=get_limit_config("RATE_LIMIT_GENERAL_PER_MINUTE", 120),
+                window=60,
+                key_extractor=lambda req: f"{extract_user_id(req)}:general",
+            )
+        )
+    ],
+)
 async def list_notes(
     classroomId: str | None = Query(default=None),
     token_payload: dict = Depends(require_user),
@@ -394,7 +432,19 @@ async def list_notes(
     return [_format_note(r) for r in rows]
 
 
-@router.get("/{note_id}")
+@router.get(
+    "/{note_id}",
+    dependencies=[
+        Depends(
+            rate_limit(
+                "synapse:rl:user",
+                limit=get_limit_config("RATE_LIMIT_GENERAL_PER_MINUTE", 120),
+                window=60,
+                key_extractor=lambda req: f"{extract_user_id(req)}:general",
+            )
+        )
+    ],
+)
 async def get_note(
     note_id: str,
     token_payload: dict = Depends(require_user),
@@ -428,7 +478,19 @@ async def get_note(
     return _format_note(note)
 
 
-@router.patch("/{note_id}")
+@router.patch(
+    "/{note_id}",
+    dependencies=[
+        Depends(
+            rate_limit(
+                "synapse:rl:user",
+                limit=get_limit_config("RATE_LIMIT_GENERAL_PER_MINUTE", 120),
+                window=60,
+                key_extractor=lambda req: f"{extract_user_id(req)}:general",
+            )
+        )
+    ],
+)
 async def update_note(
     note_id: str,
     req: UpdateNoteRequest,

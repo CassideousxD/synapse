@@ -20,6 +20,7 @@ from app.core.db import (
     UserRow,
     get_db,
 )
+from app.core.rate_limit import extract_user_id, get_limit_config, rate_limit
 from app.core.security import require_teacher, require_user
 from app.curriculum.mcq_generation import generate_mcq_for_concept
 
@@ -91,7 +92,19 @@ def _norm(s: str) -> str:
     return re.sub(r"[^a-z0-9]", "", s.strip().lower())
 
 
-@router.post("/tests/generate-questions")
+@router.post(
+    "/tests/generate-questions",
+    dependencies=[
+        Depends(
+            rate_limit(
+                "synapse:rl:ai:user",
+                limit=get_limit_config("RATE_LIMIT_AI_PER_MINUTE", 10),
+                window=60,
+                key_extractor=extract_user_id,
+            )
+        )
+    ],
+)
 async def generate_questions_for_test(
     req: GenerateQuestionsRequest,
     teacher_id: str = Depends(require_teacher),
@@ -239,7 +252,19 @@ async def create_test(
     return _format_test(test)
 
 
-@router.get("/tests")
+@router.get(
+    "/tests",
+    dependencies=[
+        Depends(
+            rate_limit(
+                "synapse:rl:user",
+                limit=get_limit_config("RATE_LIMIT_GENERAL_PER_MINUTE", 120),
+                window=60,
+                key_extractor=lambda req: f"{extract_user_id(req)}:general",
+            )
+        )
+    ],
+)
 async def list_tests(
     classroomId: str | None = Query(default=None),
     token_payload: dict = Depends(require_user),

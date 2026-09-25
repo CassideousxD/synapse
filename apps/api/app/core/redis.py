@@ -26,7 +26,7 @@ async def init_redis() -> Redis:
         return _redis_client
 
     url = get_redis_url()
-    max_connections = int(os.environ.get("REDIS_MAX_CONNECTIONS", "10"))
+    max_connections = int(os.environ.get("REDIS_MAX_CONNECTIONS", "50"))
 
     client = aioredis.from_url(
         url,
