@@ -13,13 +13,18 @@ else:
     load_dotenv()
 
 from app.core.db import init_db
+from app.core.redis import close_redis, init_redis
 from app.routers import analytics, auth, classes, llm_proxy, notes, notifications, tests
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
-    yield
+    await init_redis()
+    try:
+        yield
+    finally:
+        await close_redis()
 
 
 app = FastAPI(title="Synapse API", lifespan=lifespan)
