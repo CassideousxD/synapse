@@ -15,9 +15,34 @@ from sqlalchemy import (
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
 
-DB_URL = os.environ.get("SYNAPSE_DB_URL", "sqlite+aiosqlite:///./synapse.db")
+def get_database_url() -> str:
+    # Priority: DATABASE_URL, then SYNAPSE_DB_URL, then default sqlite
+    raw_url = os.environ.get("DATABASE_URL") or os.environ.get("SYNAPSE_DB_URL")
+    if not raw_url:
+        return "sqlite+aiosqlite:///./synapse.db"
 
-engine = create_async_engine(DB_URL, echo=False)
+    # Normalize standard postgres URLs to asyncpg dialect
+    if raw_url.startswith("postgres://"):
+        return raw_url.replace("postgres://", "postgresql+asyncpg://", 1)
+    if raw_url.startswith("postgresql://") and not raw_url.startswith("postgresql+"):
+        return raw_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+    return raw_url
+
+
+DB_URL = get_database_url()
+
+# Connection pool configuration
+engine_kwargs = {"echo": False}
+if DB_URL.startswith("postgresql") or "asyncpg" in DB_URL:
+    engine_kwargs.update(
+        {
+            "pool_size": int(os.environ.get("DB_POOL_SIZE", "5")),
+            "max_overflow": int(os.environ.get("DB_MAX_OVERFLOW", "10")),
+            "pool_pre_ping": True,
+        }
+    )
+
+engine = create_async_engine(DB_URL, **engine_kwargs)
 SessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 
 
@@ -143,30 +168,33 @@ class ConceptRow(Base):
 
 
 async def init_db() -> None:
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-        # Check and add columns to tables if not yet present in SQLite
-        from sqlalchemy import text
-        try:
-            await conn.execute(text("ALTER TABLE notes ADD COLUMN content TEXT"))
-        except Exception:
-            pass  # Column already exists
-        try:
-            await conn.execute(text("ALTER TABLE notes ADD COLUMN status VARCHAR DEFAULT 'READY'"))
-        except Exception:
-            pass  # Column already exists
-        try:
-            await conn.execute(text("UPDATE notes SET status = 'READY' WHERE status IS NULL"))
-        except Exception:
-            pass
-        try:
-            await conn.execute(text("ALTER TABLE tests ADD COLUMN due_at DATETIME"))
-        except Exception:
-            pass
-        try:
-            await conn.execute(text("ALTER TABLE submissions ADD COLUMN is_late BOOLEAN DEFAULT 0"))
-        except Exception:
-            pass
+    # When connecting to PostgreSQL, Alembic migrations own the production schema.
+    # We only run create_all and legacy SQLite ALTERs when running on SQLite (e.g. legacy local dev).
+    if "sqlite" in DB_URL:
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+            # Legacy SQLite-only catch-up migrations
+            from sqlalchemy import text
+            try:
+                await conn.execute(text("ALTER TABLE notes ADD COLUMN content TEXT"))
+            except Exception:
+                pass  # Column already exists
+            try:
+                await conn.execute(text("ALTER TABLE notes ADD COLUMN status VARCHAR DEFAULT 'READY'"))
+            except Exception:
+                pass  # Column already exists
+            try:
+                await conn.execute(text("UPDATE notes SET status = 'READY' WHERE status IS NULL"))
+            except Exception:
+                pass
+            try:
+                await conn.execute(text("ALTER TABLE tests ADD COLUMN due_at DATETIME"))
+            except Exception:
+                pass
+            try:
+                await conn.execute(text("ALTER TABLE submissions ADD COLUMN is_late BOOLEAN DEFAULT 0"))
+            except Exception:
+                pass
 
 
 async def get_db():
