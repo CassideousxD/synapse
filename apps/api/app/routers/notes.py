@@ -11,6 +11,7 @@ from pydantic import BaseModel, ConfigDict
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.ai_jobs import AIJobManager
 from app.core.db import (
     ClassroomRow,
     ConceptRow,
@@ -30,14 +31,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/notes", tags=["notes"])
 
-_background_tasks: set[asyncio.Task] = set()
 
-
-def _safe_create_task(coro):
-    task = asyncio.create_task(coro)
-    _background_tasks.add(task)
-    task.add_done_callback(_background_tasks.discard)
-    return task
 
 
 class CreateNoteRequest(BaseModel):
@@ -183,51 +177,7 @@ def _format_note(n: NoteRow) -> dict[str, Any]:
     }
 
 
-async def _run_concept_extraction(
-    note_id: str,
-    classroom_id: str,
-    source_text: str,
-    title: str,
-) -> None:
-    try:
-        proposals = await extract_concepts(source_text, title=title)
-        async with get_session_context() as bg_db:
-            note = await bg_db.scalar(select(NoteRow).where(NoteRow.id == note_id))
-            if not note:
-                return
 
-            concept_ids = []
-            if proposals:
-                concept_ids = await sync_classroom_concepts(classroom_id, proposals, bg_db)
-
-            # Re-link sections if needed
-            sections = []
-            try:
-                sections = json.loads(note.sections) if note.sections else []
-            except Exception:
-                sections = []
-
-            if concept_ids and sections:
-                for s in sections:
-                    if not s.get("conceptId"):
-                        s["conceptId"] = concept_ids[0]
-                note.sections = json.dumps(sections)
-
-            note.concept_ids = json.dumps(concept_ids)
-            note.status = "READY"
-            note.updated_at = datetime.now(timezone.utc)
-            await bg_db.commit()
-    except Exception as exc:
-        logger.exception("Concept extraction failed for note %s: %s", note_id, exc)
-        try:
-            async with get_session_context() as bg_db:
-                note = await bg_db.scalar(select(NoteRow).where(NoteRow.id == note_id))
-                if note:
-                    note.status = "FAILED"
-                    note.updated_at = datetime.now(timezone.utc)
-                    await bg_db.commit()
-        except Exception:
-            pass
 
 
 @router.post(
@@ -338,8 +288,18 @@ async def create_note(
                     body_parts.append(heading or body)
             source_text = "\n\n".join(body_parts)
 
-        _safe_create_task(
-            _run_concept_extraction(note.id, req.classroomId, source_text, title)
+        job_mgr = AIJobManager()
+        await job_mgr.create_and_enqueue_job(
+            db=db,
+            user_id=teacher_id,
+            job_type="NOTE_CONCEPT_EXTRACTION",
+            payload={
+                "note_id": note.id,
+                "classroom_id": req.classroomId,
+                "source_text": source_text,
+                "title": title,
+            },
+            classroom_id=req.classroomId,
         )
 
     return _format_note(note)
@@ -376,8 +336,18 @@ async def retry_note_extraction(
     await db.refresh(note)
 
     source_text = note.content or note.summary or note.title
-    _safe_create_task(
-        _run_concept_extraction(note.id, note.classroom_id, source_text, note.title)
+    job_mgr = AIJobManager()
+    await job_mgr.create_and_enqueue_job(
+        db=db,
+        user_id=teacher_id,
+        job_type="NOTE_CONCEPT_EXTRACTION_RETRY",
+        payload={
+            "note_id": note.id,
+            "classroom_id": note.classroom_id,
+            "source_text": source_text,
+            "title": note.title,
+        },
+        classroom_id=note.classroom_id,
     )
     return _format_note(note)
 

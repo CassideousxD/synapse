@@ -167,6 +167,26 @@ class ConceptRow(Base):
     created_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
 
 
+class AIJobRow(Base):
+    __tablename__ = "ai_jobs"
+
+    id = Column(String, primary_key=True)
+    user_id = Column(String, ForeignKey("users.id"), nullable=False, index=True)
+    classroom_id = Column(String, ForeignKey("classrooms.id"), nullable=True, index=True)
+    job_type = Column(String, nullable=False, index=True)
+    status = Column(String, nullable=False, default="QUEUED", index=True)
+    priority = Column(Integer, nullable=False, default=0)
+    attempts = Column(Integer, nullable=False, default=0)
+    max_attempts = Column(Integer, nullable=False, default=3)
+    payload = Column(Text, nullable=False, default="{}")
+    result = Column(Text, nullable=True)
+    error = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
+    started_at = Column(DateTime(timezone=True), nullable=True)
+    completed_at = Column(DateTime(timezone=True), nullable=True)
+    updated_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+
+
 async def init_db() -> None:
     # When connecting to PostgreSQL, Alembic migrations own the production schema.
     # We only run create_all and legacy SQLite ALTERs when running on SQLite (e.g. legacy local dev).

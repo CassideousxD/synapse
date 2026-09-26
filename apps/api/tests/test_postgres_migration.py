@@ -44,6 +44,7 @@ async def test_postgres_schema_and_crud():
             "notifications",
             "analysis_payloads",
             "concepts",
+            "ai_jobs",
         ]
         for tbl in tables:
             r = await session.execute(text(f"SELECT COUNT(*) FROM {tbl}"))
