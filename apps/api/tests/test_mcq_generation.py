@@ -87,3 +87,80 @@ def test_extract_json_handles_prose_wrapped_object():
 def test_extract_json_raises_when_nothing_found():
     with pytest.raises(JsonExtractError):
         extract_json_object("no json here at all")
+
+
+def test_extract_json_handles_trailing_commas():
+    raw_with_trailing = """
+    {
+        "questionId": "q1",
+        "stem": "What is dynamic routing?",
+        "options": [
+            {"id": "a", "text": "Path selection based on topology changes"},
+            {"id": "b", "text": "Fixed manual route entry"},
+        ],
+        "correctOptionId": "a",
+    }
+    """
+    extracted = extract_json_object(raw_with_trailing, target_keys={"questionId", "stem", "options", "correctOptionId"})
+    assert extracted["questionId"] == "q1"
+    assert extracted["stem"] == "What is dynamic routing?"
+    assert len(extracted["options"]) == 2
+    assert extracted["correctOptionId"] == "a"
+
+
+def test_extract_json_prioritizes_full_question_over_preamble_option():
+    raw = """
+    Here is an example option: {"id": "example", "text": "sample text"}
+    
+    And here is the actual complete question:
+    ```json
+    {
+        "questionId": "q-real",
+        "stem": "Which layer does IP operate at?",
+        "options": [
+            {"id": "a", "text": "Network layer"},
+            {"id": "b", "text": "Transport layer"}
+        ],
+        "correctOptionId": "a"
+    }
+    ```
+    """
+    extracted = extract_json_object(raw, target_keys={"questionId", "stem", "options", "correctOptionId"})
+    assert extracted["questionId"] == "q-real"
+    assert extracted["stem"] == "Which layer does IP operate at?"
+
+
+def test_generated_question_normalizes_aliases():
+    data = {
+        "id": "q-aliased",
+        "prompt": "What is an autonomous system?",
+        "choices": [
+            {"label": "opt1", "value": "A collection of connected routing prefixes under common control"},
+            {"label": "opt2", "value": "A single physical router with redundant power supplies"}
+        ],
+        "answer": "opt1",
+    }
+    q = GeneratedQuestion.model_validate(data)
+    assert q.questionId == "q-aliased"
+    assert q.stem == "What is an autonomous system?"
+    assert len(q.options) == 2
+    assert q.options[0].id == "opt1"
+    assert q.options[0].text == "A collection of connected routing prefixes under common control"
+    assert q.correctOptionId == "opt1"
+
+
+def test_generated_question_normalizes_string_options():
+    data = {
+        "questionId": "q-str",
+        "stem": "Is BGP an exterior gateway protocol?",
+        "options": ["True", "False"],
+        "correctOptionId": "True",
+    }
+    q = GeneratedQuestion.model_validate(data)
+    assert q.stem == "Is BGP an exterior gateway protocol?"
+    assert len(q.options) == 2
+    assert q.options[0].id == "a"
+    assert q.options[0].text == "True"
+    assert q.options[1].id == "b"
+    assert q.options[1].text == "False"
+    assert q.correctOptionId == "a"

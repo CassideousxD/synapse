@@ -1,66 +1,107 @@
+from __future__ import annotations
+
+import logging
 import os
+from typing import Any
 
 import httpx
 
-from app.llm.router import ModelTier, resolve_model
+from app.llm.errors import (
+    AuthenticationError,
+    ConfigurationError,
+    InvalidResponseError,
+    LLMProviderError,
+    NimError,
+    RateLimitError,
+    TemporaryProviderError,
+    TimeoutError,
+)
+from app.llm.factory import create_llm_provider
+from app.llm.providers.base import LLMProvider
+from app.llm.router import ModelTier
 
-NIM_BASE_URL = os.environ.get("NVIDIA_BASE_URL", "https://integrate.api.nvidia.com/v1")
-NIM_TIMEOUT_S = float(os.environ.get("NVIDIA_TIMEOUT_S", "60"))
+logger = logging.getLogger("synapse.llm")
+
+_active_provider: LLMProvider | None = None
 
 
-class NimError(Exception):
-    """status=None means we never got a response from NIM at all (network/timeout)."""
+def get_llm_provider() -> LLMProvider:
+    """Returns the singleton LLM provider instance, instantiating it if necessary."""
+    global _active_provider
+    if _active_provider is None:
+        _active_provider = create_llm_provider()
+    return _active_provider
 
-    def __init__(self, message: str, status: int | None = None):
-        super().__init__(message)
-        self.status = status
+
+def set_llm_provider(provider: LLMProvider | None) -> None:
+    """Explicitly sets or resets the active LLM provider (useful for testing)."""
+    global _active_provider
+    _active_provider = provider
 
 
-async def call_nim(
+async def init_llm_client() -> LLMProvider:
+    """Eagerly initializes the active LLM provider."""
+    provider = get_llm_provider()
+    logger.info(f"Initialized LLM provider '{provider.provider_name}'")
+    return provider
+
+
+async def close_llm_client() -> None:
+    """Cleanly closes active provider connections."""
+    global _active_provider
+    if _active_provider is not None:
+        await _active_provider.close()
+        logger.info(f"Closed LLM provider '{_active_provider.provider_name}'")
+    _active_provider = None
+
+
+def get_current_provider_name() -> str:
+    """Returns the name of the currently active LLM provider (e.g. 'nim', 'groq', 'gemini')."""
+    return get_llm_provider().provider_name
+
+
+def get_current_provider_model(tier: ModelTier = "main") -> str:
+    """Returns the resolved model string for the active provider."""
+    return get_llm_provider().resolve_model_name(tier)
+
+
+async def call_llm(
     tier: ModelTier,
-    messages: list[dict],
-    temperature: float | None,
-    max_tokens: int | None,
-) -> dict:
-    api_key = os.environ.get("NVIDIA_API_KEY")
-    if not api_key:
-        raise NimError("Server misconfigured: NVIDIA_API_KEY not set", status=None)
-
-    model = resolve_model(tier)
-    body = {
-        "model": model,
-        "messages": messages,
-        "temperature": temperature if temperature is not None else 0.2,
-        "max_tokens": max_tokens if max_tokens is not None else 1024,
+    messages: list[dict[str, Any]],
+    temperature: float | None = None,
+    max_tokens: int | None = None,
+    max_retries: int = 2,
+) -> dict[str, Any]:
+    """
+    Unified entry point for LLM inference across all supported providers.
+    Returns normalized dict:
+    {
+        "content": str,
+        "model": str,
+        "usage": {"promptTokens": int, "completionTokens": int} | None,
     }
+    """
+    provider = get_llm_provider()
+    return await provider.call(
+        tier=tier,
+        messages=messages,
+        temperature=temperature,
+        max_tokens=max_tokens,
+        max_retries=max_retries,
+    )
 
-    try:
-        async with httpx.AsyncClient(timeout=NIM_TIMEOUT_S) as client:
-            res = await client.post(
-                f"{NIM_BASE_URL}/chat/completions",
-                headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-                json=body,
-            )
-    except httpx.TimeoutException:
-        raise NimError(f"NIM request timed out after {NIM_TIMEOUT_S}s", status=None)
-    except httpx.HTTPError as e:
-        raise NimError(f"NIM request failed: {e}", status=None)
 
-    if res.status_code >= 400:
-        raise NimError(f"NIM {res.status_code}: {res.text[:200]}", status=res.status_code)
+# =========================================================================
+# Backward-compatibility aliases for legacy code
+# =========================================================================
+call_nim = call_llm
+init_nim_client = init_llm_client
+close_nim_client = close_llm_client
 
-    data = res.json()
-    content = data.get("choices", [{}])[0].get("message", {}).get("content")
-    if not isinstance(content, str):
-        raise NimError("NIM response had no message content", status=None)
 
-    usage = data.get("usage")
-    return {
-        "content": content,
-        "model": model,
-        "usage": (
-            {"promptTokens": usage["prompt_tokens"], "completionTokens": usage["completion_tokens"]}
-            if usage
-            else None
-        ),
-    }
+def get_nim_client() -> httpx.AsyncClient:
+    """Backward-compatible helper for legacy test suites expecting httpx.AsyncClient."""
+    provider = get_llm_provider()
+    if hasattr(provider, "_get_client"):
+        return provider._get_client()  # type: ignore[attr-defined]
+    return httpx.AsyncClient()

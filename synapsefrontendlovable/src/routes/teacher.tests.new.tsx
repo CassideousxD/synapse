@@ -58,6 +58,9 @@ function NewTest() {
   });
   const [isPublishing, setIsPublishing] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [questionCount, setQuestionCount] = useState<number>(5);
+  // Stable draft test identifier for this editing session
+  const [draftId] = useState(() => `draft-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`);
   const room = classes.find((c) => c.id === cls);
   const { data: classroomConcepts = [] } = useClassroomConcepts(cls);
 
@@ -95,9 +98,10 @@ function NewTest() {
       const token = getToken();
       if (token) {
         const generated = await apiGenerateQuestions({
+          testId: draftId,
           classroomId: cls,
           conceptIds: picked,
-          count: Math.max(3, picked.length),
+          count: questionCount,
         });
         if (generated.length) {
           setQs([...qs, ...generated]);
@@ -235,13 +239,35 @@ function NewTest() {
               </div>
             </fieldset>
           ))}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Button variant="outline" onClick={() => addQ("mcq")}><Plus className="size-4" aria-hidden="true" /> Multiple choice</Button>
             <Button variant="outline" onClick={() => addQ("short")}><Plus className="size-4" aria-hidden="true" /> Short answer</Button>
-            <Button variant="secondary" onClick={handleGenerateAI} disabled={isGenerating}>
-              {isGenerating ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Sparkles className="size-4" aria-hidden="true" />}
-              Generate with AI
-            </Button>
+            <div className="flex items-center gap-1.5 ml-auto">
+              <Label htmlFor="ai-question-count" className="text-xs text-muted-foreground whitespace-nowrap">
+                Questions:
+              </Label>
+              <Input
+                id="ai-question-count"
+                type="number"
+                min={1}
+                max={30}
+                value={questionCount}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value, 10);
+                  if (!isNaN(val)) {
+                    setQuestionCount(Math.min(30, Math.max(1, val)));
+                  } else {
+                    setQuestionCount(1);
+                  }
+                }}
+                className="h-9 w-16 text-center text-sm"
+                aria-label="Number of questions to generate with AI"
+              />
+              <Button variant="secondary" onClick={handleGenerateAI} disabled={isGenerating}>
+                {isGenerating ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Sparkles className="size-4" aria-hidden="true" />}
+                Generate with AI
+              </Button>
+            </div>
           </div>
         </div>
       )}

@@ -14,6 +14,7 @@ else:
 
 from app.core.db import init_db
 from app.core.redis import close_redis, init_redis
+from app.llm.client import close_llm_client, init_llm_client
 from app.routers import analytics, auth, classes, llm_proxy, notes, notifications, tests
 
 
@@ -21,10 +22,13 @@ from app.routers import analytics, auth, classes, llm_proxy, notes, notification
 async def lifespan(app: FastAPI):
     await init_db()
     await init_redis()
+    await init_llm_client()
     try:
         yield
     finally:
+        await close_llm_client()
         await close_redis()
+
 
 
 app = FastAPI(title="Synapse API", lifespan=lifespan)

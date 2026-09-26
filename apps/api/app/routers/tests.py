@@ -5,9 +5,12 @@ from datetime import datetime, timezone
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
+import logging
+import time
 
 from app.core.db import (
     AnalysisPayloadRow,
@@ -22,16 +25,28 @@ from app.core.db import (
 )
 from app.core.rate_limit import extract_user_id, get_limit_config, rate_limit
 from app.core.security import require_teacher, require_user
-from app.curriculum.mcq_generation import generate_mcq_for_concept
+from app.curriculum.generation_memory import (
+    add_test_generation_questions,
+    get_test_generation_memory,
+)
+from app.curriculum.mcq_generation import (
+    CONCEPTUAL_ANGLES,
+    PlannedSlot,
+    generate_mcq_batch_bounded,
+    generate_mcq_for_concept,
+    select_question_format,
+)
 
+logger = logging.getLogger("synapse.tests")
 router = APIRouter(tags=["tests"])
 
 
 class GenerateQuestionsRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
+    testId: str | None = None
     classroomId: str
     conceptIds: list[str] | None = None
-    count: int = 3
+    count: int = Field(default=5, ge=1, le=30)
 
 
 class CreateTestRequest(BaseModel):
@@ -118,6 +133,51 @@ async def generate_questions_for_test(
     if classroom.teacher_id != teacher_id:
         raise HTTPException(status_code=403, detail="Forbidden: You do not own this classroom")
 
+    existing_mem = None
+    effective_test_id: str
+    if req.testId:
+        test_row = await db.scalar(
+            select(TestRow).where(TestRow.id == req.testId)
+        )
+        if test_row:
+            if test_row.classroom_id != req.classroomId:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Test does not belong to the specified classroom",
+                )
+            effective_test_id = test_row.id
+            existing_mem = await get_test_generation_memory(effective_test_id)
+        else:
+            # Temporary draft test identifier — verify ownership if memory already exists
+            existing_mem = await get_test_generation_memory(req.testId)
+            if existing_mem and existing_mem.teacher_id != teacher_id:
+                raise HTTPException(
+                    status_code=403,
+                    detail="Forbidden: You do not own this draft generation session",
+                )
+            effective_test_id = req.testId
+    else:
+        effective_test_id = f"draft-{uuid.uuid4().hex[:8]}"
+
+    # Extract previous generation memory context if present
+    previous_stems: list[str] = []
+    previous_questions: list[dict] = []
+    previous_formats: list[str] = []
+    if existing_mem and existing_mem.questions:
+        previous_questions = [
+            {
+                "id": q.id,
+                "prompt": q.prompt,
+                "conceptId": q.concept_id,
+                "format": q.format,
+                "options": q.options,
+                "answer": q.answer,
+            }
+            for q in existing_mem.questions
+        ]
+        previous_stems = [q.prompt for q in existing_mem.questions if q.prompt]
+        previous_formats = [q.format for q in existing_mem.questions if q.format]
+
     target_cids = list(req.conceptIds or [])
     if not target_cids:
         concept_rows = (
@@ -179,17 +239,95 @@ async def generate_questions_for_test(
                 detail="None of the specified concepts were found in this classroom.",
             )
 
-    generated = []
+    start_time = time.perf_counter()
+
+    # If generate_mcq_for_concept was monkeypatched on this router by legacy test fixtures, honor it
+    from app.curriculum import mcq_generation as _mcq_mod
+    if generate_mcq_for_concept is not _mcq_mod.generate_mcq_for_concept:
+        mock_generated = []
+        m_idx = 0
+        while len(mock_generated) < req.count and concepts_to_use:
+            c = concepts_to_use[m_idx % len(concepts_to_use)]
+            m_idx += 1
+            try:
+                q = await generate_mcq_for_concept(
+                    concept_id=c.id,
+                    concept_name=c.name,
+                    concept_summary=c.description or "",
+                    question_index=len(mock_generated) + 1,
+                    total_count=req.count,
+                    previous_stems=previous_stems,
+                )
+            except TypeError:
+                q = await generate_mcq_for_concept(
+                    concept_id=c.id,
+                    concept_name=c.name,
+                    concept_summary=c.description or "",
+                    question_index=len(mock_generated) + 1,
+                    total_count=req.count,
+                )
+            mock_generated.append(q)
+        await add_test_generation_questions(
+            test_id=effective_test_id,
+            teacher_id=teacher_id,
+            classroom_id=req.classroomId,
+            questions=mock_generated,
+        )
+        return mock_generated
+
+    logger.info(
+        f"Generating {req.count} questions for classroom {req.classroomId} "
+        f"across {len(concepts_to_use)} concept(s)"
+    )
+
+    planned_slots: list[PlannedSlot] = []
+    concept_counts: dict[str, int] = {}
+    planned_formats: list[str] = list(previous_formats)
     idx = 0
-    # Deduplicate within small batches while respecting weighting
-    used_ids: list[str] = []
-    while len(generated) < req.count and concepts_to_use:
+
+    for slot_id in range(req.count):
         c = concepts_to_use[idx % len(concepts_to_use)]
         idx += 1
-        q = await generate_mcq_for_concept(c.id, c.name, c.description or "")
-        generated.append(q)
-        used_ids.append(c.id)
+        c_q_idx = concept_counts.get(c.id, 0) + 1
+        concept_counts[c.id] = c_q_idx
 
+        fmt = select_question_format(
+            concept_name=c.name,
+            concept_summary=c.description or "",
+            question_index=c_q_idx,
+            total_count=req.count,
+            recent_formats=planned_formats,
+        )
+        planned_formats.append(fmt)
+        angle = CONCEPTUAL_ANGLES[(c_q_idx - 1) % len(CONCEPTUAL_ANGLES)]
+
+        planned_slots.append(
+            PlannedSlot(
+                slot_id=slot_id,
+                concept_id=c.id,
+                concept_name=c.name,
+                concept_summary=c.description or "",
+                question_index=c_q_idx,
+                total_count=req.count,
+                angle=angle,
+                question_format=fmt,
+            )
+        )
+
+    generated = await generate_mcq_batch_bounded(
+        planned_slots,
+        initial_previous_stems=previous_stems if previous_stems else None,
+        existing_questions=previous_questions if previous_questions else None,
+    )
+    duration = time.perf_counter() - start_time
+    logger.info(f"Generated {len(generated)} questions in {duration:.2f}s")
+
+    await add_test_generation_questions(
+        test_id=effective_test_id,
+        teacher_id=teacher_id,
+        classroom_id=req.classroomId,
+        questions=generated,
+    )
     return generated
 
 

@@ -54,6 +54,7 @@ export async function getSubmissions(): Promise<Submission[]> {
 }
 
 export interface GenerateQuestionsPayload {
+  testId?: string;
   classroomId: string;
   conceptIds?: string[];
   count?: number;

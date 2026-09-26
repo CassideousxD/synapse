@@ -4,8 +4,9 @@ import uuid
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.llm.client import call_nim
+from app.llm.client import call_llm, call_nim
 from app.llm.json_utils import call_json
+
 
 
 class ProposedConcept(BaseModel):
@@ -57,11 +58,12 @@ async def generate_concepts(
     tier: str = "main",
     max_repairs: int = 1,
 ) -> list[ProposedConcept]:
-    async def call_llm(tier: str, messages: list[dict], temperature: float | None, max_tokens: int | None) -> dict:
-        return await call_nim(tier, messages, temperature, max_tokens)
+    async def call_llm_worker(tier: str, messages: list[dict], temperature: float | None, max_tokens: int | None) -> dict:
+        return await call_llm(tier, messages, temperature, max_tokens)
 
     result = await call_json(
-        call_llm,
+        call_llm_worker,
+
         tier,
         _prompt(source_text, max_concepts),
         ConceptTaggingResult,

@@ -94,7 +94,7 @@ function TakeTest() {
         <motion.fieldset key={q.id} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -12 }} transition={{ duration: 0.2 }} className="ink-card p-6">
           <legend className="sr-only">Question {i + 1}</legend>
           <p className="text-sm text-muted-foreground">Question {i + 1} of {test.questions.length} · {conceptById[q.conceptId]?.name}</p>
-          <p className="mt-3 font-display text-2xl leading-snug">{q.prompt}</p>
+          <p className="mt-3 font-display text-2xl leading-snug whitespace-pre-line">{q.prompt}</p>
           {q.type === "mcq" ? (
             <div role="radiogroup" aria-label="Answer options" className="mt-6 grid gap-2">
               {q.options!.map((o, k) => {
