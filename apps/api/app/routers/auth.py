@@ -7,7 +7,16 @@ from pydantic import BaseModel, ConfigDict
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.db import UserRow, get_db
+from app.core.db import (
+    AIJobRow,
+    AnalysisPayloadRow,
+    ClassroomRow,
+    EnrollmentRow,
+    NotificationRow,
+    SubmissionRow,
+    UserRow,
+    get_db,
+)
 from app.core.rate_limit import (
     check_rate_limit_without_increment,
     extract_client_ip,
@@ -244,3 +253,82 @@ async def get_me(token_payload: dict = Depends(require_user), db: AsyncSession =
         )
 
     raise HTTPException(status_code=404, detail="User not found")
+
+
+@router.delete("/me", status_code=status.HTTP_200_OK)
+@router.delete("/account", status_code=status.HTTP_200_OK)
+async def delete_me(
+    token_payload: dict = Depends(require_user),
+    db: AsyncSession = Depends(get_db),
+):
+    sub = token_payload.get("sub", "")
+    role = token_payload.get("role", "")
+    user = await db.scalar(select(UserRow).where(or_(UserRow.id == sub, UserRow.email == sub.lower())))
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user_id = user.id
+
+    if role == "student":
+        # 1. Delete student's enrollments
+        enrollments = (
+            await db.scalars(select(EnrollmentRow).where(EnrollmentRow.student_id == user_id))
+        ).all()
+        for e in enrollments:
+            await db.delete(e)
+
+        # 2. Delete student's submissions
+        submissions = (
+            await db.scalars(select(SubmissionRow).where(SubmissionRow.student_id == user_id))
+        ).all()
+        for s in submissions:
+            await db.delete(s)
+
+        # 3. Delete analysis payloads
+        payloads = (
+            await db.scalars(select(AnalysisPayloadRow).where(AnalysisPayloadRow.student_id == user_id))
+        ).all()
+        for p in payloads:
+            await db.delete(p)
+
+    elif role == "teacher":
+        # Reassign classrooms to a deactivated placeholder teacher so classrooms & student history are preserved
+        classrooms = (
+            await db.scalars(select(ClassroomRow).where(ClassroomRow.teacher_id == user_id))
+        ).all()
+        if classrooms:
+            placeholder_id = "u-deactivated-teacher"
+            placeholder = await db.scalar(select(UserRow).where(UserRow.id == placeholder_id))
+            if not placeholder:
+                placeholder = UserRow(
+                    id=placeholder_id,
+                    name="Former Teacher",
+                    email="former-teacher@synapse.internal",
+                    password_hash="!disabled!",
+                    role="teacher",
+                )
+                db.add(placeholder)
+                await db.flush()
+
+            for c in classrooms:
+                c.teacher_id = placeholder_id
+
+    # 4. Clean up notifications for this user
+    notifs = (
+        await db.scalars(select(NotificationRow).where(NotificationRow.recipient_id == user_id))
+    ).all()
+    for n in notifs:
+        await db.delete(n)
+
+    # 5. Clean up AI jobs for this user
+    jobs = (
+        await db.scalars(select(AIJobRow).where(AIJobRow.user_id == user_id))
+    ).all()
+    for j in jobs:
+        await db.delete(j)
+
+    # 6. Delete the user row
+    await db.delete(user)
+    await db.commit()
+
+    return {"status": "ok", "message": "Account deleted successfully"}

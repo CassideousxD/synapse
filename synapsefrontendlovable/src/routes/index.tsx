@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { ArrowRight, BookOpen, GraduationCap } from "lucide-react";
+import { ArrowRight, BookOpen, GraduationCap, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { useDemo, type DemoRole } from "@/stores/demo-store";
 import { Logo } from "@/components/synapse/AppShell";
@@ -70,6 +70,8 @@ export function RoleSelect() {
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showSignInPassword, setShowSignInPassword] = useState(false);
+  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
 
   const openAuth = (role: DemoRole) => {
     // 1. Check if a remembered session exists for this specific role
@@ -97,6 +99,8 @@ export function RoleSelect() {
     setEmail(savedEmail);
     setPassword("");
     setName("");
+    setShowSignInPassword(false);
+    setShowRegisterPassword(false);
     setRememberMe(isRemembered);
   };
 
@@ -198,7 +202,7 @@ export function RoleSelect() {
   return (
     <main className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col justify-center px-6 py-16">
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-        <div className="mb-10 flex items-center gap-3"><Logo /><span className="font-display text-2xl">Synapse</span></div>
+        <div className="mb-10 flex items-center gap-3"><Logo className="size-11" /><span className="font-display text-2xl">Synapse</span></div>
         <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Adaptive learning · Demo edition</p>
         <h1 className="mt-4 max-w-3xl text-4xl leading-tight md:text-6xl">
           A quiet notebook that learns <em className="italic text-muted-foreground">how you learn.</em>
@@ -305,15 +309,27 @@ export function RoleSelect() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="signin-password">Password</Label>
-                  <Input
-                    id="signin-password"
-                    type="password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    autoComplete="current-password"
-                  />
+                  <div className="relative">
+                    <Input
+                      id="signin-password"
+                      type={showSignInPassword ? "text" : "password"}
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="••••••••"
+                      autoComplete="current-password"
+                      className="pr-10"
+                    />
+                    <button
+                      type="button"
+                      tabIndex={-1}
+                      onClick={() => setShowSignInPassword((v) => !v)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      aria-label={showSignInPassword ? "Hide password" : "Show password"}
+                    >
+                      {showSignInPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                    </button>
+                  </div>
                 </div>
                 <div className="flex items-start space-x-2 pt-1">
                   <Checkbox
@@ -386,16 +402,28 @@ export function RoleSelect() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="reg-password">Password (min 6 chars)</Label>
-                  <Input
-                    id="reg-password"
-                    type="password"
-                    required
-                    minLength={6}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    autoComplete="new-password"
-                  />
+                  <div className="relative">
+                    <Input
+                      id="reg-password"
+                      type={showRegisterPassword ? "text" : "password"}
+                      required
+                      minLength={6}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="••••••••"
+                      autoComplete="new-password"
+                      className="pr-10"
+                    />
+                    <button
+                      type="button"
+                      tabIndex={-1}
+                      onClick={() => setShowRegisterPassword((v) => !v)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      aria-label={showRegisterPassword ? "Hide password" : "Show password"}
+                    >
+                      {showRegisterPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                    </button>
+                  </div>
                 </div>
                 <div className="flex items-start space-x-2 pt-1">
                   <Checkbox

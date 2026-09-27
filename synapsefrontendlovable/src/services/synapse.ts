@@ -19,6 +19,7 @@ import {
   createClassroom as apiCreateClassroom,
   joinClassroom as apiJoinClassroom,
   leaveClassroom as apiLeaveClassroom,
+  updateClassroom as apiUpdateClassroom,
   getClassroomConcepts as apiGetClassroomConcepts,
   getStudentConcepts as apiGetStudentConcepts,
   type ClassroomConcept,
@@ -73,7 +74,7 @@ export const queryKeys = {
   classroomConcepts: (classroomId?: string) => ["classroom-concepts", classroomId] as const,
   notifications: () => ["notifications"] as const,
   unreadNotifications: () => ["notifications", "unread"] as const,
-  teacherDashboard: () => ["teacher-analytics-dashboard"] as const,
+  teacherDashboard: (classroomId?: string) => ["teacher-analytics-dashboard", classroomId] as const,
 };
 
 export const invalidateQueries = {
@@ -95,10 +96,21 @@ export const invalidateQueries = {
       queryClient.invalidateQueries({ queryKey: ["student-mastery"] }),
       queryClient.invalidateQueries({ queryKey: ["classroom-concepts"] }),
       queryClient.invalidateQueries({ queryKey: ["student-concepts"] }),
-      queryClient.invalidateQueries({ queryKey: ["teacher-analytics-dashboard"] }),
       queryClient.invalidateQueries({ queryKey: queryKeys.notifications() }),
       queryClient.invalidateQueries({ queryKey: queryKeys.unreadNotifications() }),
     ]);
+  },
+  classroomUpdated: async (queryClient: QueryClient, classroomId?: string) => {
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: ["classrooms"] }),
+      queryClient.invalidateQueries({ queryKey: ["classroom-concepts"] }),
+      queryClient.invalidateQueries({ queryKey: ["student-concepts"] }),
+      queryClient.invalidateQueries({ queryKey: ["teacher-analytics-dashboard"] }),
+    ]);
+    if (classroomId) {
+      queryClient.invalidateQueries({ queryKey: ["classroom", classroomId] });
+      queryClient.invalidateQueries({ queryKey: ["classroom-students", classroomId] });
+    }
   },
   classroomLeft: async (queryClient: QueryClient, classroomId?: string) => {
     await Promise.all([
@@ -372,12 +384,12 @@ export function useAnalyticsSummary() {
   });
 }
 
-export function useTeacherAnalyticsDashboard() {
+export function useTeacherAnalyticsDashboard(classroomId?: string) {
   const token = getToken();
   const user = useDemo((s) => s.user);
   return useQuery({
-    queryKey: queryKeys.teacherDashboard(),
-    queryFn: apiGetTeacherAnalyticsDashboard,
+    queryKey: queryKeys.teacherDashboard(classroomId),
+    queryFn: () => apiGetTeacherAnalyticsDashboard(classroomId),
     enabled: !!token && user?.role === "teacher",
     refetchInterval: 60000,
   });
@@ -624,6 +636,7 @@ export {
   apiCreateClassroom,
   apiJoinClassroom,
   apiLeaveClassroom,
+  apiUpdateClassroom,
   apiGetNote,
   apiCreateNote,
   apiUpdateNote,

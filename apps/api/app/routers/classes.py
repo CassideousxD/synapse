@@ -53,6 +53,13 @@ class JoinClassroomRequest(BaseModel):
     joinCode: str
 
 
+class UpdateClassroomRequest(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    name: str | None = None
+    subject: str | None = None
+    description: str | None = None
+
+
 def _gen_join_code() -> str:
     alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
     return "".join(secrets.choice(alphabet) for _ in range(6))
@@ -306,6 +313,37 @@ async def get_classroom(
         if not enrolled:
             raise HTTPException(status_code=403, detail="Forbidden: You are not enrolled in this classroom")
 
+    return await _format_classroom(classroom, db)
+
+
+@router.patch("/{classroom_id}")
+async def update_classroom(
+    classroom_id: str,
+    req: UpdateClassroomRequest,
+    teacher_id: str = Depends(require_teacher),
+    db: AsyncSession = Depends(get_db),
+):
+    classroom = await db.scalar(
+        select(ClassroomRow).where(ClassroomRow.id == classroom_id)
+    )
+    if not classroom:
+        raise HTTPException(status_code=404, detail="Classroom not found")
+    if classroom.teacher_id != teacher_id:
+        raise HTTPException(status_code=403, detail="Forbidden: You do not own this classroom")
+
+    if req.name is not None:
+        new_name = req.name.strip()
+        if not new_name:
+            raise HTTPException(status_code=400, detail="Classroom name cannot be empty")
+        classroom.name = new_name
+    if req.subject is not None:
+        classroom.subject = req.subject.strip()
+    if req.description is not None:
+        classroom.description = req.description.strip()
+
+    classroom.updated_at = datetime.now(timezone.utc)
+    await db.commit()
+    await db.refresh(classroom)
     return await _format_classroom(classroom, db)
 
 

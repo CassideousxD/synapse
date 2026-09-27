@@ -70,4 +70,18 @@ export async function getStudentConcepts(): Promise<ClassroomConcept[]> {
   return apiFetch<ClassroomConcept[]>("/classrooms/enrolled/concepts");
 }
 
+export interface UpdateClassroomPayload {
+  name?: string;
+  subject?: string;
+  description?: string;
+}
+
+export async function updateClassroom(id: string, payload: UpdateClassroomPayload): Promise<Classroom> {
+  return apiFetch<Classroom>(`/classrooms/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+  });
+}
+
+
 

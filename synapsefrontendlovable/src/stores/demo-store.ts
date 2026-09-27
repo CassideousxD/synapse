@@ -82,6 +82,7 @@ interface DemoState {
   deleteNote: (id: string) => void;
   toggleNote: (id: string) => void;
   createClassroom: (name: string, subject: string) => Classroom;
+  updateClassroomName: (id: string, name: string) => void;
   reset: () => void;
 }
 
@@ -225,6 +226,13 @@ export const useDemo = create<DemoState>()(
         };
         set({ classrooms: [...get().classrooms, c] });
         return c;
+      },
+      updateClassroomName: (id: string, name: string) => {
+        set({
+          classrooms: get().classrooms.map((x) =>
+            x.id === id ? { ...x, name } : x
+          ),
+        });
       },
       reset: () => set({ ...initial() }),
     }),

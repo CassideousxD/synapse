@@ -80,3 +80,13 @@ export async function getMe(): Promise<User> {
 export function logout(): void {
   clearToken();
 }
+
+export async function deleteAccount(): Promise<{ status: string; message: string }> {
+  const res = await apiFetch<{ status: string; message: string }>("/auth/me", {
+    method: "DELETE",
+    requiresAuth: true,
+  });
+  clearToken();
+  return res;
+}
+

@@ -105,7 +105,7 @@ export function NotificationCenter() {
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-md max-h-[80vh] flex flex-col p-0 gap-0 overflow-hidden">
-          <DialogHeader className="p-4 border-b border-border flex flex-row items-center justify-between space-y-0">
+          <DialogHeader className="p-4 pr-12 border-b border-border flex flex-row items-center justify-between space-y-0">
             <div className="flex items-center gap-2">
               <DialogTitle className="font-display text-lg">Notifications</DialogTitle>
               {unreadCount > 0 && (

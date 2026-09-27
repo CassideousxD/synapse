@@ -84,3 +84,147 @@ async def test_summary_aggregates_per_concept(client, teacher_headers):
             "trendCounts": {"improving": 0, "still_weak": 0, "new_gap": 1},
         },
     ]
+
+
+async def test_teacher_dashboard_empty(client, teacher_headers):
+    r = await client.get("/analytics/teacher-dashboard", headers=teacher_headers)
+    assert r.status_code == 200
+    data = r.json()
+    assert data["overview"]["classroomCount"] == 0
+    assert data["classrooms"] == []
+    assert data["concepts"] == []
+    assert data["students"] == []
+    assert data["tests"] == []
+
+
+async def test_teacher_dashboard_with_data_and_filtering(client, teacher_headers):
+    import json
+    from datetime import datetime, timezone
+    from app.core.db import (
+        ClassroomRow,
+        ConceptRow,
+        EnrollmentRow,
+        SubmissionRow,
+        TestRow,
+        UserRow,
+        AnalysisPayloadRow,
+        get_db,
+    )
+    from app.main import app
+
+    now = datetime.now(timezone.utc)
+    # Obtain db session
+    override = app.dependency_overrides.get(get_db)
+    async for db in override():
+        # Setup teacher
+        t1 = UserRow(id="teacher1", name="Prof Turing", email="turing@example.com", password_hash="hash", role="teacher")
+        t2 = UserRow(id="teacher2", name="Prof Hopper", email="hopper@example.com", password_hash="hash", role="teacher")
+        # Setup student
+        s1 = UserRow(id="stu1", name="Alice Student", email="alice@example.com", password_hash="hash", role="student")
+        
+        c1 = ClassroomRow(id="cls1", name="Algorithms 101", subject="CS", join_code="ALGO1", teacher_id="teacher1")
+        c2 = ClassroomRow(id="cls2", name="Systems 101", subject="CS", join_code="SYS1", teacher_id="teacher1")
+        c_other = ClassroomRow(id="cls_other", name="Other Room", subject="Math", join_code="MTH1", teacher_id="teacher2")
+        
+        e1 = EnrollmentRow(id="enr1", classroom_id="cls1", student_id="stu1", enrolled_at=now)
+        con1 = ConceptRow(id="c-dijkstra", classroom_id="cls1", name="Dijkstra's Algorithm", normalized_name="dijkstra")
+        
+        q1 = {
+            "id": "q1",
+            "prompt": "What is the complexity of Dijkstra?",
+            "type": "mcq",
+            "answer": "O(E log V)",
+            "conceptId": "c-dijkstra",
+            "options": ["O(E log V)", "O(V^3)", "O(1)"],
+        }
+        test1 = TestRow(
+            id="t1",
+            title="Dijkstra Quiz",
+            classroom_id="cls1",
+            duration_min=15,
+            status="published",
+            concept_ids=json.dumps(["c-dijkstra"]),
+            questions=json.dumps([q1]),
+            created_at=now,
+        )
+        sub1 = SubmissionRow(
+            id="sub1",
+            test_id="t1",
+            student_id="stu1",
+            score=100.0,
+            answers=json.dumps({"q1": "O(E log V)"}),
+            is_late=False,
+            submitted_at=now,
+        )
+        pay1 = AnalysisPayloadRow(
+            id="p1",
+            student_id="stu1",
+            concept_id="c-dijkstra",
+            mastery=45.0,  # struggling (<55)
+            trend="still_weak",
+            computed_at=now,
+        )
+        db.add_all([t1, t2, s1, c1, c2, c_other, e1, con1, test1, sub1, pay1])
+        await db.commit()
+        break
+
+    # 1. Fetch dashboard without filter (All Classrooms)
+    r = await client.get("/analytics/teacher-dashboard", headers=teacher_headers)
+    assert r.status_code == 200
+    res = r.json()
+    assert res["overview"]["classroomCount"] == 2
+    assert res["overview"]["studentCount"] == 1
+    assert res["overview"]["totalSubmissionCount"] == 1
+    assert res["overview"]["weakConceptCount"] == 1
+    assert len(res["classrooms"]) == 2
+    assert len(res["allClassrooms"]) == 2
+    
+    # Check concept drilldown
+    assert len(res["concepts"]) == 1
+    con_res = res["concepts"][0]
+    assert con_res["name"] == "Dijkstra's Algorithm"
+    assert con_res["status"] == "Needs Attention"
+    assert con_res["strugglingCount"] == 1
+    assert len(con_res["students"]) == 1
+    assert con_res["students"][0]["name"] == "Alice Student"
+    assert con_res["students"][0]["mastery"] == 45.0
+
+    # Check student support
+    assert len(res["students"]) == 1
+    stu_res = res["students"][0]
+    assert stu_res["name"] == "Alice Student"
+    assert stu_res["weakConceptCount"] == 1
+    assert stu_res["classroomName"] == "Algorithms 101"
+
+    # Check test performance & question analytics
+    assert len(res["tests"]) == 1
+    t_res = res["tests"][0]
+    assert t_res["title"] == "Dijkstra Quiz"
+    assert t_res["completionRate"] == 100.0
+    assert len(t_res["questions"]) == 1
+    assert t_res["questions"][0]["correctPercentage"] == 100.0
+
+    # 2. Filter by cls1
+    r_cls1 = await client.get(f"/analytics/teacher-dashboard?classroom_id=cls1", headers=teacher_headers)
+    assert r_cls1.status_code == 200
+    d_cls1 = r_cls1.json()
+    assert d_cls1["selectedClassroomId"] == "cls1"
+    assert d_cls1["overview"]["classroomCount"] == 1
+    assert len(d_cls1["concepts"]) == 1
+
+    # 3. Filter by cls2 (which has no students or tests)
+    r_cls2 = await client.get(f"/analytics/teacher-dashboard?classroom_id=cls2", headers=teacher_headers)
+    assert r_cls2.status_code == 200
+    d_cls2 = r_cls2.json()
+    assert d_cls2["selectedClassroomId"] == "cls2"
+    assert d_cls2["overview"]["studentCount"] == 0
+    assert len(d_cls2["concepts"]) == 0
+
+    # 4. Filter by non-existent classroom
+    r_404 = await client.get("/analytics/teacher-dashboard?classroom_id=nonexistent", headers=teacher_headers)
+    assert r_404.status_code == 404
+
+    # 5. Filter by classroom owned by another teacher -> 403 Forbidden
+    r_403 = await client.get("/analytics/teacher-dashboard?classroom_id=cls_other", headers=teacher_headers)
+    assert r_403.status_code == 403
+

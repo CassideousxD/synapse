@@ -135,3 +135,72 @@ async def test_teacher_roster_and_student_join_sync(client):
     remaining_in_a = {s["id"] for s in r_roster_after_leave.json()}
     assert remaining_in_a == {s2_id, s3_id}
     assert s1_id not in remaining_in_a
+
+
+@pytest.mark.asyncio
+async def test_teacher_edit_classroom_name(client):
+    # 1. Register Teacher and Student
+    r_t = await client.post(
+        "/auth/register/teacher",
+        json={"name": "Prof X", "email": "profx@example.com", "password": "password123"},
+    )
+    t_token = r_t.json()["accessToken"]
+    t_headers = {"Authorization": f"Bearer {t_token}"}
+
+    r_other_t = await client.post(
+        "/auth/register/teacher",
+        json={"name": "Prof Y", "email": "profy@example.com", "password": "password123"},
+    )
+    other_t_token = r_other_t.json()["accessToken"]
+    other_t_headers = {"Authorization": f"Bearer {other_t_token}"}
+
+    r_s = await client.post(
+        "/auth/register/student",
+        json={"name": "Student Edit", "email": "sedit@example.com", "password": "password123"},
+    )
+    s_token = r_s.json()["accessToken"]
+    s_headers = {"Authorization": f"Bearer {s_token}"}
+
+    # 2. Teacher creates classroom
+    r_c = await client.post(
+        "/classrooms",
+        json={"name": "Original Name", "subject": "CS"},
+        headers=t_headers,
+    )
+    assert r_c.status_code == 201
+    cid = r_c.json()["id"]
+    original_code = r_c.json()["joinCode"]
+
+    # 3. Rename classroom as teacher owner
+    r_patch = await client.patch(
+        f"/classrooms/{cid}",
+        json={"name": "Updated Renamed Classroom"},
+        headers=t_headers,
+    )
+    assert r_patch.status_code == 200
+    assert r_patch.json()["name"] == "Updated Renamed Classroom"
+    # Join code preserved!
+    assert r_patch.json()["joinCode"] == original_code
+
+    # 4. GET /classrooms/{id} returns updated name
+    r_get = await client.get(f"/classrooms/{cid}", headers=t_headers)
+    assert r_get.status_code == 200
+    assert r_get.json()["name"] == "Updated Renamed Classroom"
+    assert r_get.json()["joinCode"] == original_code
+
+    # 5. Non-owner teacher cannot rename -> 403 Forbidden
+    r_unauth_patch = await client.patch(
+        f"/classrooms/{cid}",
+        json={"name": "Hacked Name"},
+        headers=other_t_headers,
+    )
+    assert r_unauth_patch.status_code == 403
+
+    # 6. Student cannot rename -> 403 Forbidden
+    r_student_patch = await client.patch(
+        f"/classrooms/{cid}",
+        json={"name": "Student Trying To Rename"},
+        headers=s_headers,
+    )
+    assert r_student_patch.status_code == 403
+

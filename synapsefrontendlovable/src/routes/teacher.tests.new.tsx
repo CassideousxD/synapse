@@ -58,7 +58,7 @@ function NewTest() {
   });
   const [isPublishing, setIsPublishing] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [questionCount, setQuestionCount] = useState<number>(5);
+  const [questionCountInput, setQuestionCountInput] = useState<string>("5");
   // Stable draft test identifier for this editing session
   const [draftId] = useState(() => `draft-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`);
   const room = classes.find((c) => c.id === cls);
@@ -94,6 +94,8 @@ function NewTest() {
   const handleGenerateAI = async () => {
     if (isGenerating || picked.length === 0) return;
     setIsGenerating(true);
+    const parsedCount = parseInt(questionCountInput, 10);
+    const count = isNaN(parsedCount) || parsedCount < 1 ? 5 : Math.min(30, Math.max(1, parsedCount));
     try {
       const token = getToken();
       if (token) {
@@ -101,7 +103,7 @@ function NewTest() {
           testId: draftId,
           classroomId: cls,
           conceptIds: picked,
-          count: questionCount,
+          count,
         });
         if (generated.length) {
           setQs([...qs, ...generated]);
@@ -183,24 +185,46 @@ function NewTest() {
               No concepts found in {room.name} yet. Upload notes to extract concepts automatically.
             </div>
           ) : (
-            <div className="flex flex-wrap gap-2" role="group" aria-label="Concepts">
-              {availableConcepts.map((c) => {
-                const on = picked.includes(c.id);
-                return (
-                  <button
-                    key={c.id}
-                    type="button"
-                    aria-pressed={on}
-                    onClick={() => setPicked(on ? picked.filter((x) => x !== c.id) : [...picked, c.id])}
-                    className={cn(
-                      "rounded-full border px-3 py-1.5 text-sm transition-all hover:-translate-y-px",
-                      on ? "border-foreground bg-foreground text-background" : "border-border"
-                    )}
-                  >
-                    {c.name}
-                  </button>
-                );
-              })}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-muted-foreground">
+                  Select concepts to test ({picked.length} of {availableConcepts.length} selected)
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="h-7 text-xs"
+                  onClick={() => {
+                    if (picked.length === availableConcepts.length) {
+                      setPicked([]);
+                    } else {
+                      setPicked(availableConcepts.map((c) => c.id));
+                    }
+                  }}
+                >
+                  {picked.length === availableConcepts.length ? "Deselect All" : "Select All"}
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2" role="group" aria-label="Concepts">
+                {availableConcepts.map((c) => {
+                  const on = picked.includes(c.id);
+                  return (
+                    <button
+                      key={c.id}
+                      type="button"
+                      aria-pressed={on}
+                      onClick={() => setPicked(on ? picked.filter((x) => x !== c.id) : [...picked, c.id])}
+                      className={cn(
+                        "rounded-full border px-3 py-1.5 text-sm transition-all hover:-translate-y-px",
+                        on ? "border-foreground bg-foreground text-background" : "border-border"
+                      )}
+                    >
+                      {c.name}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           )}
         </Section>
@@ -251,16 +275,24 @@ function NewTest() {
                 type="number"
                 min={1}
                 max={30}
-                value={questionCount}
+                value={questionCountInput}
                 onChange={(e) => {
-                  const val = parseInt(e.target.value, 10);
-                  if (!isNaN(val)) {
-                    setQuestionCount(Math.min(30, Math.max(1, val)));
-                  } else {
-                    setQuestionCount(1);
+                  const val = e.target.value;
+                  if (val === "" || /^\d*$/.test(val)) {
+                    setQuestionCountInput(val);
                   }
                 }}
-                className="h-9 w-16 text-center text-sm"
+                onBlur={() => {
+                  const val = parseInt(questionCountInput, 10);
+                  if (isNaN(val) || val < 1) {
+                    setQuestionCountInput("1");
+                  } else if (val > 30) {
+                    setQuestionCountInput("30");
+                  } else {
+                    setQuestionCountInput(String(val));
+                  }
+                }}
+                className="h-9 w-16 text-center text-sm no-spinner [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 aria-label="Number of questions to generate with AI"
               />
               <Button variant="secondary" onClick={handleGenerateAI} disabled={isGenerating}>

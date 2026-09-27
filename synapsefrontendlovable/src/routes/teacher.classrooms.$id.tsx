@@ -1,18 +1,41 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
-import { Copy, Plus } from "lucide-react";
+import { Copy, Plus, Pencil } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { meta } from "@/lib/meta";
 import { PageHeader, Section, Stat, MasteryBar, Trend, ConceptChip } from "@/components/synapse/ui";
 import { NotesManager } from "@/components/synapse/NotesManager";
 import { InkBars, InkLine } from "@/components/synapse/charts";
-import { useClassroom, useClassroomStudents, useTests, useSubmissions, useNotes, classAverageMastery, studentsIn, useTeacherAnalyticsDashboard } from "@/services/synapse";
+import {
+  useClassroom,
+  useClassroomStudents,
+  useTests,
+  useSubmissions,
+  useNotes,
+  classAverageMastery,
+  studentsIn,
+  useTeacherAnalyticsDashboard,
+  apiUpdateClassroom,
+  invalidateQueries,
+} from "@/services/synapse";
+import { useDemo } from "@/stores/demo-store";
 import { getToken } from "@/api/client";
 import { conceptById, edges } from "@/demo/concepts";
 import type { Student } from "@/demo/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { formatTimeAgo } from "@/lib/deadlines";
 
@@ -37,7 +60,43 @@ function ClassroomPage() {
   const { data: serverStudents } = useClassroomStudents(id);
   const { data: dashboard } = useTeacherAnalyticsDashboard();
   const token = getToken();
+  const queryClient = useQueryClient();
+  const updateStoreName = useDemo((s) => s.updateClassroomName);
   const [sel, setSel] = useState<Student | null>(null);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editNameValue, setEditNameValue] = useState("");
+  const [isSavingName, setIsSavingName] = useState(false);
+
+  const handleOpenEdit = () => {
+    if (!c) return;
+    setEditNameValue(c.name);
+    setIsEditingName(true);
+  };
+
+  const handleSaveName = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = editNameValue.trim();
+    if (!trimmed) {
+      toast.error("Classroom name cannot be empty");
+      return;
+    }
+    setIsSavingName(true);
+    try {
+      if (token) {
+        await apiUpdateClassroom(id, { name: trimmed });
+        await invalidateQueries.classroomUpdated(queryClient, id);
+      } else {
+        updateStoreName(id, trimmed);
+      }
+      toast.success("Classroom name updated");
+      setIsEditingName(false);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to update classroom name";
+      toast.error(msg);
+    } finally {
+      setIsSavingName(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -98,9 +157,14 @@ function ClassroomPage() {
     <>
       <p className="mb-4 text-sm"><Link to="/teacher/classrooms" className="text-muted-foreground hover:text-foreground">← Classrooms</Link></p>
       <PageHeader eyebrow={c.subject} title={c.name} actions={
-        <Button variant="outline" onClick={() => { navigator.clipboard?.writeText(c.joinCode); toast("Join code copied", { description: c.joinCode }); }}>
-          <Copy className="size-4" aria-hidden="true" /> <span className="font-mono tracking-widest">{c.joinCode}</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={handleOpenEdit} className="gap-1.5 text-xs">
+            <Pencil className="size-3.5" aria-hidden="true" /> Edit Name
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => { navigator.clipboard?.writeText(c.joinCode); toast("Join code copied", { description: c.joinCode }); }}>
+            <Copy className="size-3.5" aria-hidden="true" /> <span className="font-mono tracking-widest">{c.joinCode}</span>
+          </Button>
+        </div>
       }>{c.description}</PageHeader>
 
       <Tabs defaultValue="overview">
@@ -265,6 +329,37 @@ function ClassroomPage() {
           )}
         </SheetContent>
       </Sheet>
+
+      <Dialog open={isEditingName} onOpenChange={setIsEditingName}>
+        <DialogContent className="sm:max-w-md">
+          <form onSubmit={handleSaveName}>
+            <DialogHeader>
+              <DialogTitle className="font-display">Edit classroom name</DialogTitle>
+              <DialogDescription>
+                Change the name of this classroom. The join code will remain unchanged.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-4 space-y-2">
+              <Label htmlFor="edit-classroom-name">Classroom Name</Label>
+              <Input
+                id="edit-classroom-name"
+                value={editNameValue}
+                onChange={(e) => setEditNameValue(e.target.value)}
+                placeholder="e.g. Data Structures & Algorithms"
+                autoFocus
+              />
+            </div>
+            <DialogFooter className="gap-2 sm:gap-0">
+              <Button type="button" variant="outline" onClick={() => setIsEditingName(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSavingName || !editNameValue.trim()}>
+                {isSavingName ? "Saving…" : "Save changes"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

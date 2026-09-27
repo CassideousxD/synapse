@@ -136,3 +136,54 @@ async def test_student_forbidden_from_teacher_route(client):
     r = await client.get("/analytics/summary", headers={"Authorization": f"Bearer {token}"})
     assert r.status_code == 403
     assert "Teacher role required" in r.json()["detail"]
+
+
+async def test_student_account_deletion(client):
+    reg = await client.post(
+        "/auth/register/student",
+        json={"name": "Delete Me Student", "email": "deletestudent@college.edu", "password": "password123"},
+    )
+    assert reg.status_code == 201
+    token = reg.json()["accessToken"]
+
+    # Verify user exists
+    me = await client.get("/auth/me", headers={"Authorization": f"Bearer {token}"})
+    assert me.status_code == 200
+
+    # Delete account
+    del_res = await client.delete("/auth/me", headers={"Authorization": f"Bearer {token}"})
+    assert del_res.status_code == 200
+    assert del_res.json()["status"] == "ok"
+
+    # Subsequent /auth/me returns 404
+    me_after = await client.get("/auth/me", headers={"Authorization": f"Bearer {token}"})
+    assert me_after.status_code == 404
+
+    # Subsequent login returns 401
+    login_after = await client.post(
+        "/auth/login",
+        json={"email": "deletestudent@college.edu", "password": "password123"},
+    )
+    assert login_after.status_code == 401
+
+
+async def test_teacher_account_deletion(client):
+    reg = await client.post(
+        "/auth/register/teacher",
+        json={"name": "Delete Me Teacher", "email": "deleteteacher@college.edu", "password": "password123"},
+    )
+    assert reg.status_code == 201
+    token = reg.json()["accessToken"]
+
+    # Delete account
+    del_res = await client.delete("/auth/me", headers={"Authorization": f"Bearer {token}"})
+    assert del_res.status_code == 200
+    assert del_res.json()["status"] == "ok"
+
+    # Subsequent login returns 401
+    login_after = await client.post(
+        "/auth/login",
+        json={"email": "deleteteacher@college.edu", "password": "password123"},
+    )
+    assert login_after.status_code == 401
+

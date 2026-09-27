@@ -46,6 +46,8 @@ export interface TeacherDashboardOverview {
   activeStudentCount: number;
   publishedTestCount: number;
   totalSubmissionCount: number;
+  expectedSubmissionCount?: number;
+  completionRate?: number | null;
   averageScore: number | null;
   averageMastery: number | null;
   weakConceptCount: number;
@@ -63,16 +65,60 @@ export interface TeacherClassroomMetric {
   averageScore: number | null;
 }
 
+export interface TeacherConceptStudent {
+  id: string;
+  name: string;
+  email: string;
+  mastery: number;
+  trend: string;
+  status: string;
+}
+
 export interface TeacherConceptMetric {
   id: string;
   name: string;
   classroomId: string;
+  classroomName?: string;
   category: string;
   avgMastery: number | null;
   studentCount: number;
   strugglingCount: number;
   proficientCount: number;
+  status?: string;
+  improvingCount?: number;
+  stillWeakCount?: number;
+  newGapCount?: number;
   trendCounts: Record<string, number>;
+  students?: TeacherConceptStudent[];
+}
+
+export interface TeacherStudentWeakConcept {
+  id: string;
+  name: string;
+  mastery: number;
+  trend: string;
+}
+
+export interface TeacherStudentRecentSubmission {
+  testId: string;
+  testTitle: string;
+  score: number;
+  isLate: boolean;
+  submittedAt: string;
+}
+
+export interface TeacherStudentSupportMetric {
+  id: string;
+  name: string;
+  email: string;
+  classroomNames?: string[];
+  classroomName: string;
+  avgScore: number | null;
+  testsCompleted: number;
+  avgMastery: number | null;
+  weakConceptCount: number;
+  weakConcepts?: TeacherStudentWeakConcept[];
+  recentSubmissions?: TeacherStudentRecentSubmission[];
 }
 
 export interface TeacherLeaderboardStudent {
@@ -83,6 +129,45 @@ export interface TeacherLeaderboardStudent {
   testsCompleted: number;
   avgMastery: number | null;
   weakConceptCount: number;
+}
+
+export interface TeacherTestQuestionMistake {
+  answer: string;
+  count: number;
+}
+
+export interface TeacherTestQuestionMetric {
+  id: string;
+  index: number;
+  prompt: string;
+  type: string;
+  options?: string[];
+  conceptId: string;
+  conceptName: string;
+  expectedAnswer: string;
+  answeredCount: number;
+  correctCount: number;
+  correctPercentage: number | null;
+  commonMistakes: TeacherTestQuestionMistake[];
+}
+
+export interface TeacherTestMetric {
+  id: string;
+  title: string;
+  classroomId: string;
+  classroomName: string;
+  status: string;
+  durationMin: number;
+  due: string;
+  dueAt: string | null;
+  createdAt: string | null;
+  submissionCount: number;
+  enrolledCount: number;
+  completionRate: number;
+  averageScore: number | null;
+  lateCount: number;
+  scoreDistribution: Record<string, number>;
+  questions: TeacherTestQuestionMetric[];
 }
 
 export interface TeacherActivityItem {
@@ -96,13 +181,20 @@ export interface TeacherActivityItem {
 
 export interface TeacherAnalyticsDashboard {
   overview: TeacherDashboardOverview;
+  selectedClassroomId?: string | null;
+  allClassrooms?: Array<{ id: string; name: string; subject: string }>;
   classrooms: TeacherClassroomMetric[];
   concepts: TeacherConceptMetric[];
+  students?: TeacherStudentSupportMetric[];
   leaderboard: TeacherLeaderboardStudent[];
+  tests?: TeacherTestMetric[];
   recentActivity: TeacherActivityItem[];
 }
 
-export async function getTeacherAnalyticsDashboard(): Promise<TeacherAnalyticsDashboard> {
-  return apiFetch<TeacherAnalyticsDashboard>("/analytics/teacher-dashboard");
+export async function getTeacherAnalyticsDashboard(classroomId?: string): Promise<TeacherAnalyticsDashboard> {
+  const url = classroomId
+    ? `/analytics/teacher-dashboard?classroom_id=${encodeURIComponent(classroomId)}`
+    : "/analytics/teacher-dashboard";
+  return apiFetch<TeacherAnalyticsDashboard>(url);
 }
 
